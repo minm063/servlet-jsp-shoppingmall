@@ -43,7 +43,7 @@ class ViewResolverTest {
                 ()->Assertions.assertTrue(viewResolver.isRedirect("REDIRECT:/login.do")),
                 ()->Assertions.assertTrue(viewResolver.isRedirect("ReDIrECT:/login.do")),
                 ()->Assertions.assertFalse(viewResolver.isRedirect("/main/index")),
-                ()->Assertions.assertFalse(viewResolver.isRedirect("/admin/producnt/list"))
+                ()->Assertions.assertFalse(viewResolver.isRedirect("/admin/product/list"))
         );
     }
 

@@ -45,7 +45,7 @@ class UserRepositoryImplTest {
     @Test
     @Order(2)
     @DisplayName("로그인 : sql injection 방어")
-    @Disabled
+//    @Disabled
     void findByUserIdAndUserPassword_sql_injection(){
         //테스트 코드가 통과할 수 있도록  userRepository.findByUserIdAndUserPassword를 수정하세요.
         String password="' or '1'='1";
@@ -68,6 +68,7 @@ class UserRepositoryImplTest {
     void save() {
         User newUser = new User("nhnacademy-test-user2","nhn아카데미2","nhnacademy-test-password2","19900502", User.Auth.ROLE_USER,100_0000,LocalDateTime.now(),null);
         int result = userRepository.save(newUser);
+        log.debug("save: {}", result);
         Assertions.assertAll(
                 ()->Assertions.assertEquals(1,result),
                 ()->Assertions.assertEquals(newUser, userRepository.findById(newUser.getUserId()).get())

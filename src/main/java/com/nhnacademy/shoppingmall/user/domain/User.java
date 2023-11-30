@@ -17,6 +17,7 @@ public class User {
     private LocalDateTime createdAt;
     private LocalDateTime latestLoginAt;
 
+
     public User (String userId, String userName, String userPassword, String userBirth, Auth userAuth, int userPoint, LocalDateTime createdAt, LocalDateTime latestLoginAt ){
         this.userId = userId;
         this.userName = userName;
