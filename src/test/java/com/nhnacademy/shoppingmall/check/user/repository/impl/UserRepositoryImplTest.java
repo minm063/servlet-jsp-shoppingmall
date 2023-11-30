@@ -68,7 +68,6 @@ class UserRepositoryImplTest {
     void save() {
         User newUser = new User("nhnacademy-test-user2","nhn아카데미2","nhnacademy-test-password2","19900502", User.Auth.ROLE_USER,100_0000,LocalDateTime.now(),null);
         int result = userRepository.save(newUser);
-        log.debug("save: {}", result);
         Assertions.assertAll(
                 ()->Assertions.assertEquals(1,result),
                 ()->Assertions.assertEquals(newUser, userRepository.findById(newUser.getUserId()).get())
@@ -121,5 +120,12 @@ class UserRepositoryImplTest {
     void updateLatestLoginAtByUserId() {
         int result = userRepository.updateLatestLoginAtByUserId(testUser.getUserId(),LocalDateTime.now());
         Assertions.assertEquals(1,result);
+    }
+
+    @Test
+    @Order(9)
+    void countTest() {
+        int count = userRepository.countByUserId("nhnacademy-test-user");
+        Assertions.assertEquals(1, count);
     }
 }

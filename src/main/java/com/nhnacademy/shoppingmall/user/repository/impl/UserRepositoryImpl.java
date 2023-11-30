@@ -24,8 +24,6 @@ public class UserRepositoryImpl implements UserRepository {
         String sql =
                 "select user_id, user_name, user_password, user_birth, user_auth, user_point, created_at, latest_login_at from users where user_id=? and user_password =?";
 
-        log.debug("sql:{}", sql);
-
         try (PreparedStatement psmt = connection.prepareStatement(sql)) {
             psmt.setString(1, userId);
             psmt.setString(2, userPassword);
@@ -64,7 +62,6 @@ public class UserRepositoryImpl implements UserRepository {
             preparedStatement.setString(1, userId);
 
             ResultSet rs = preparedStatement.executeQuery();
-            log.info("rs: {}", rs);
             if (rs.next()) {
                 User user = new User(
                         userId,
@@ -105,7 +102,6 @@ public class UserRepositoryImpl implements UserRepository {
             preparedStatement.setObject(8, user.getLatestLoginAt());
 
             int result = preparedStatement.executeUpdate();
-            log.info("save row: {}", result);
             return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);
