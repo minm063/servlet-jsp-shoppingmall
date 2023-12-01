@@ -17,7 +17,8 @@ public class AdminCheckFilter extends HttpFilter {
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         //todo#11 /admin/ 하위 요청은 관리자 권한의 사용자만 접근할 수 있습니다. ROLE_USER가 접근하면 403 Forbidden 에러처리
         if (req.getServletPath().startsWith("/admin/")) {
-
+            req.getSession().getAttribute("role");
+            res.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
         chain.doFilter(req, res);
     }

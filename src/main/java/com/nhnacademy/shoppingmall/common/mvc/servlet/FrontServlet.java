@@ -25,10 +25,10 @@ public class FrontServlet extends HttpServlet {
     public void init() throws ServletException {
         //todo#7-1 controllerFactory를 초기화 합니다.
         controllerFactory = new ControllerFactory();
-        Set<Class<?>> classSet = Set.of(
-                LoginController.class
-        );
-        controllerFactory.initialize(classSet, getServletContext());
+//        Set<Class<?>> classSet = Set.of(
+//                LoginController.class
+//        );
+//        controllerFactory.initialize(classSet, getServletContext());
 
         //todo#7-2 viewResolver를 초기화 합니다.
         viewResolver = new ViewResolver();
