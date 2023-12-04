@@ -1,10 +1,14 @@
 package com.nhnacademy.shoppingmall.common.mvc.servlet;
 
+import static com.nhnacademy.shoppingmall.common.mvc.controller.ControllerFactory.CONTEXT_CONTROLLER_FACTORY_NAME;
+
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.mvc.controller.ControllerFactory;
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
 import com.nhnacademy.shoppingmall.common.mvc.view.ViewResolver;
+import com.nhnacademy.shoppingmall.common.util.DbUtils;
 import com.nhnacademy.shoppingmall.controller.auth.LoginController;
+import java.io.IOException;
 import java.sql.Connection;
 import java.util.Set;
 import javax.servlet.RequestDispatcher;
@@ -24,7 +28,7 @@ public class FrontServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         //todo#7-1 controllerFactory를 초기화 합니다.
-        controllerFactory = new ControllerFactory();
+        controllerFactory = (ControllerFactory) getServletContext().getAttribute(CONTEXT_CONTROLLER_FACTORY_NAME);
 //        Set<Class<?>> classSet = Set.of(
 //                LoginController.class
 //        );
@@ -35,13 +39,14 @@ public class FrontServlet extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) {
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             //todo#7-3 Connection pool로 부터 connection 할당 받습니다. connection은 Thread 내에서 공유됩니다.
-            Connection connection = DbConnectionThreadLocal.getConnection();
+            DbConnectionThreadLocal.initialize();
 
             BaseController baseController = (BaseController) controllerFactory.getController(req);
             String viewName = baseController.execute(req, resp);
+
 
             if (viewResolver.isRedirect(viewName)) {
                 String redirectUrl = viewResolver.getRedirectUrl(viewName);
@@ -56,10 +61,12 @@ public class FrontServlet extends HttpServlet {
                 rd.include(req, resp);
             }
         } catch (Exception e) {
-            log.error("error:{}", e);
+            log.error("error:{}", e.getMessage());
             DbConnectionThreadLocal.setSqlError(true);
             //todo#7-5 예외가 발생하면 해당 예외에 대해서 적절한 처리를 합니다.
-            DbConnectionThreadLocal.reset();
+            req.setAttribute("error", e);
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/index.do");
+//            requestDispatcher.forward(req, resp);
         } finally {
             //todo#7-4 connection을 반납합니다.
             DbConnectionThreadLocal.reset();

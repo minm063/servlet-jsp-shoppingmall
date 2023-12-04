@@ -19,6 +19,12 @@ public class User {
 
 
     public User (String userId, String userName, String userPassword, String userBirth, Auth userAuth, int userPoint, LocalDateTime createdAt, LocalDateTime latestLoginAt ){
+
+        if (Objects.isNull(userId) || Objects.isNull(userName) || Objects.isNull(userPassword) ||
+                Objects.isNull(userBirth) || Objects.isNull(userAuth) || Objects.isNull(createdAt)) {
+            throw new IllegalArgumentException();
+        }
+
         this.userId = userId;
         this.userName = userName;
         this.userPassword = userPassword;

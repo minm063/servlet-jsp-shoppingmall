@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 
 @RequestMapping(method = RequestMapping.Method.GET,value = {"/index.do"})
 public class IndexController implements BaseController {
+
+    public IndexController() {
+    }
+
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         return "shop/main/index";

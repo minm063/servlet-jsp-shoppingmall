@@ -178,7 +178,6 @@ public class UserRepositoryImpl implements UserRepository {
                 return count;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
         return 0;
     }

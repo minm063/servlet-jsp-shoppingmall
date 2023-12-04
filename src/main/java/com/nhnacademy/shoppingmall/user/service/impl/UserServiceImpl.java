@@ -5,6 +5,7 @@ import com.nhnacademy.shoppingmall.user.exception.UserAlreadyExistsException;
 import com.nhnacademy.shoppingmall.user.exception.UserNotFoundException;
 import com.nhnacademy.shoppingmall.user.repository.UserRepository;
 import com.nhnacademy.shoppingmall.user.service.UserService;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,6 +45,8 @@ public class UserServiceImpl implements UserService {
         userRepository.update(user);
     }
 
+
+
     @Override
     public void deleteUser(String userId) {
         //todo#4-4 회원삭제
@@ -59,7 +62,7 @@ public class UserServiceImpl implements UserService {
         //todo#4-5 로그인 구현, userId, userPassword로 일치하는 회원 조회
         Optional<User> user = userRepository.findByUserIdAndUserPassword(userId, userPassword);
         if (user.isPresent()) {
-            userRepository.updateLatestLoginAtByUserId(userId, user.get().getLatestLoginAt());
+            userRepository.updateLatestLoginAtByUserId(userId, LocalDateTime.now());
             return user.get();
         }
         throw new UserNotFoundException(userId);

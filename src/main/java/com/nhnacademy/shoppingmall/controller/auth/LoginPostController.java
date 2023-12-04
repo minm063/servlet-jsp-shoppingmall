@@ -15,18 +15,19 @@ import javax.servlet.http.HttpSession;
 public class LoginPostController implements BaseController {
 
     private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
-    private static final int INACTIVE_INTERVALTIME = 3600;
+    private static final int INACTIVE_INTERVAL_TIME = 3600;
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         //todo#13-2 로그인 구현, session은 60분동안 유지됩니다.
         String id = req.getParameter("user_id");
         String pw = req.getParameter("user_password");
+        User user = userService.getUser(id);
         userService.doLogin(id, pw);
 
-        HttpSession session = req.getSession();
-        session.setMaxInactiveInterval(INACTIVE_INTERVALTIME);
-        session.setAttribute("role", User.Auth.ROLE_USER);
+        HttpSession session = req.getSession(true);
+        session.setMaxInactiveInterval(INACTIVE_INTERVAL_TIME);
+        session.setAttribute("role", user.getUserAuth());
         session.setAttribute("user_id", id);
 
         return "shop/main/index";

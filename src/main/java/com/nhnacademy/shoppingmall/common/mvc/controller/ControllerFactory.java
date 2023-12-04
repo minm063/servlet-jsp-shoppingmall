@@ -38,6 +38,7 @@ public class ControllerFactory {
         try {
             for (Class<?> classes : c) {
                 RequestMapping requestMapping = classes.getAnnotation(RequestMapping.class);
+
                 if (Objects.nonNull(requestMapping)) {
                     for (String value : requestMapping.value()) {
                         beanMap.put(requestMapping.method() + "-" + value,
@@ -45,6 +46,7 @@ public class ControllerFactory {
                     }
                 }
             }
+
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
                  IllegalAccessException e) {
             throw new RuntimeException(e);
@@ -52,36 +54,29 @@ public class ControllerFactory {
 
 
         //todo#5-2 ctx(ServletContext)에  attribute를 추가합니다. -> key : CONTEXT_CONTROLLER_FACTORY_NAME, value : ControllerFactory
-        ctx.setAttribute(CONTEXT_CONTROLLER_FACTORY_NAME, ControllerFactory.class);
+        ctx.setAttribute(CONTEXT_CONTROLLER_FACTORY_NAME, this);
     }
 
     private Object getBean(String key) {
         //todo#5-3 beanMap에서 controller 객체를 반환 합니다.
         Object object = beanMap.get(key);
+
         if (Objects.nonNull(object)) {
             return beanMap.get(key);
         }
         throw new ControllerNotFoundException(key);
     }
 
-    public Object getController(HttpServletRequest request) {
+    public Object getController(HttpServletRequest request) { /////
         //todo#5-4 request의 method, servletPath를 이용해서 Controller 객체를 반환합니다.
-        String key = request.getMethod() + "-" + request.getServletPath();
-        Object object = beanMap.get(key);
-        if (Objects.nonNull(object)) {
-            return beanMap.get(key);
-        }
-        throw new ControllerNotFoundException(key);
+        String key = getKey(request.getMethod(), request.getServletPath());
+        return getBean(key);
     }
 
     public Object getController(String method, String path) {
         //todo#5-5 method, path를 이용해서 Controller 객체를 반환 합니다.
-        String key = method + "-" + path;
-        Object object = beanMap.get(key);
-        if (Objects.nonNull(object)) {
-            return object;
-        }
-        throw new ControllerNotFoundException(key);
+        String key = getKey(method, path);
+        return getBean(key);
     }
 
     private String getKey(String method, String path) {
