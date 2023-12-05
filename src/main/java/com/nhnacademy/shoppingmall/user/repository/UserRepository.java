@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.user.repository;
 
+import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.user.domain.User;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,4 +24,6 @@ public interface UserRepository {
     List<User> findUsers(User.Auth auth);
 
     int countAll();
+
+    Page<User> findUserByPage(User.Auth auth, int page, int pageSize);
 }

@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.user.service;
 
+import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.user.domain.User;
 import java.util.List;
 
@@ -16,4 +17,8 @@ public interface UserService {
     User doLogin(String userId, String userPassword);
 
     List<User> getUsers(User.Auth auth);
+
+    int totalCount();
+
+    Page<User> getUserByPage(User.Auth auth, int page, int pageSize);
 }

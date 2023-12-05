@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.user.service.impl;
 
+import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.user.domain.User;
 import com.nhnacademy.shoppingmall.user.exception.UserAlreadyExistsException;
 import com.nhnacademy.shoppingmall.user.exception.UserNotFoundException;
@@ -75,5 +76,19 @@ public class UserServiceImpl implements UserService {
             return new ArrayList<>();
         }
         return userRepository.findUsers(auth);
+    }
+
+    @Override
+    public int totalCount() {
+        return userRepository.countAll();
+    }
+
+    @Override
+    public Page<User> getUserByPage(User.Auth auth, int page, int pageSize) {
+        if (userRepository.countAll() == 0) {
+            throw new UserNotFoundException(auth.toString());
+        }
+
+        return userRepository.findUserByPage(auth, page, pageSize);
     }
 }

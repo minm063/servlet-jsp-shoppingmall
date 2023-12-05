@@ -1,8 +1,8 @@
 package com.nhnacademy.shoppingmall.user.repository.impl;
 
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
+import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.user.domain.User;
-import com.nhnacademy.shoppingmall.user.exception.UserNotFoundException;
 import com.nhnacademy.shoppingmall.user.repository.UserRepository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -230,5 +230,47 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (SQLException e) {
         }
         return 0;
+    }
+
+    @Override
+    public Page<User> findUserByPage(User.Auth auth, int page, int pageSize) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "select * from users where user_auth = ? order by created_at desc limit ?, ?";
+        int offset = (page - 1) * pageSize;
+        int limit = pageSize;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, auth.toString());
+            preparedStatement.setInt(2, offset);
+            preparedStatement.setInt(3, limit);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<User> userList = new ArrayList<>(pageSize);
+
+            while (resultSet.next()) {
+                User user = new User(
+                        resultSet.getString("user_id"),
+                        resultSet.getString("user_name"),
+                        resultSet.getString("user_password"),
+                        resultSet.getString("user_birth"),
+                        User.Auth.valueOf(resultSet.getString("user_auth")),
+                        resultSet.getInt("user_point"),
+                        Objects.nonNull(resultSet.getTimestamp("created_at")) ?
+                                resultSet.getTimestamp("created_at").toLocalDateTime() : null,
+                        Objects.nonNull(resultSet.getTimestamp("latest_login_at")) ?
+                                resultSet.getTimestamp("latest_login_at").toLocalDateTime() : null
+                );
+
+                userList.add(user);
+            }
+
+            long total = 0;
+            if (!userList.isEmpty()) {
+                total = countAll();
+            }
+            return new Page<User>(userList, total);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
