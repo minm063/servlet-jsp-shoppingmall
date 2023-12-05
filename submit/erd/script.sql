@@ -45,8 +45,8 @@ CREATE TABLE `review`
     `user_id`    VARCHAR(50) NOT NULL COMMENT '아이디',
 
     CONSTRAINT pk_review PRIMARY KEY (review_id),
-    CONSTRAINT fk_review_product FOREIGN KEY (product_id) REFERENCES product (product_id),
-    CONSTRAINT fk_review_users FOREIGN KEY (user_id) REFERENCES users (user_id)
+    CONSTRAINT fk_review_product FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE,
+    CONSTRAINT fk_review_users FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE `user_address`
@@ -56,7 +56,7 @@ CREATE TABLE `user_address`
     `user_id`    VARCHAR(50)  NOT NULL COMMENT '아이디',
 
     CONSTRAINT pk_user_address PRIMARY KEY (address_id),
-    CONSTRAINT fk_user_address_users FOREIGN KEY (user_id) REFERENCES users (user_id)
+    CONSTRAINT fk_user_address_users FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
 
 
@@ -66,11 +66,11 @@ CREATE TABLE `order`
     `order_date` DATETIME    NOT NULL COMMENT '주문일자',
     `ship_date`  DATETIME    NOT NULL COMMENT '배송일자',
     `user_id`    VARCHAR(50) NOT NULL COMMENT '아이디',
-    `address_id` INT         NOT NULL COMMENT '주소 아이디',
+    `address_id` INT         NULL COMMENT '주소 아이디',
 
     CONSTRAINT pk_order PRIMARY KEY (order_id),
     CONSTRAINT fk_order_users_address FOREIGN KEY (address_id) REFERENCES user_address (address_id),
-    CONSTRAINT fk_order_users FOREIGN KEY (user_id) REFERENCES users (user_id)
+    CONSTRAINT fk_order_users FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE `order_detail`
@@ -81,8 +81,8 @@ CREATE TABLE `order_detail`
     `unit_cost`  DECIMAL(15) NOT NULL COMMENT '가격',
 
     CONSTRAINT pk_order_detail PRIMARY KEY (order_id, product_id),
-    CONSTRAINT fk_order_detail_order FOREIGN KEY (order_id) REFERENCES `order` (order_id),
-    CONSTRAINT fk_order_detail_product FOREIGN KEY (product_id) REFERENCES product (product_id)
+    CONSTRAINT fk_order_detail_order FOREIGN KEY (order_id) REFERENCES `order` (order_id) ON DELETE CASCADE,
+    CONSTRAINT fk_order_detail_product FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE
 );
 
 CREATE TABLE `cart`
@@ -94,8 +94,8 @@ CREATE TABLE `cart`
     `user_id`      VARCHAR(50) NOT NULL COMMENT '아이디',
 
     CONSTRAINT pk_cart PRIMARY KEY (record_id),
-    CONSTRAINT fk_cart_product FOREIGN KEY (product_id) REFERENCES product (product_id),
-    CONSTRAINT fk_cart_users FOREIGN KEY (user_id) REFERENCES users (user_id)
+    CONSTRAINT fk_cart_product FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE,
+    CONSTRAINT fk_cart_users FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE `user_point`
@@ -106,7 +106,7 @@ CREATE TABLE `user_point`
     `user_id`       VARCHAR(50) NOT NULL COMMENT '아이디',
 
     CONSTRAINT pk_users_point PRIMARY KEY (point_id),
-    CONSTRAINT fk_user_point_users FOREIGN KEY (user_id) REFERENCES users (user_id)
+    CONSTRAINT fk_user_point_users FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
 
 
@@ -117,6 +117,6 @@ CREATE TABLE `product_category`
     `category_id` INT NOT NULL COMMENT '카테고리 아이디',
 
     CONSTRAINT pk_product_category PRIMARY KEY (product_id, category_id),
-    CONSTRAINT fk_product_category_product FOREIGN KEY (product_id) REFERENCES product (product_id),
-    CONSTRAINT fk_product_category_category FOREIGN KEY (category_id) REFERENCES category (category_id)
+    CONSTRAINT fk_product_category_product FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE ,
+    CONSTRAINT fk_product_category_category FOREIGN KEY (category_id) REFERENCES category (category_id) ON DELETE CASCADE
 );

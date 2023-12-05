@@ -74,11 +74,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     public int saveProduct(Product product) {
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql =
-                "insert into product (product_number, product_name, unit_cost, description, product_image, thumbnail) values (?,?,?,?,?,?,?)";
+                "insert into product (product_number, product_name, unit_cost, description, product_image, thumbnail) values (?,?,?,?,?,?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, product.getProductNumber());
-            preparedStatement.setString(2, product.getProductNumber());
+            preparedStatement.setString(2, product.getProductName());
             preparedStatement.setBigDecimal(3, product.getUnitCost());
             preparedStatement.setString(4, product.getDescription());
             preparedStatement.setString(5, product.getProductImage());
@@ -175,7 +175,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public int countProductById(int productId) {
         Connection connection = DbConnectionThreadLocal.getConnection();
-        String sql = "select count(*) from product where product_name=?";
+        String sql = "select count(*) from product where product_id=?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, productId);
@@ -218,4 +218,20 @@ public class ProductRepositoryImpl implements ProductRepository {
         }
         return Optional.empty();
     }
+
+    @Override
+    public int findIndex() {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "select last_insert_id()";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            ResultSet result = preparedStatement.executeQuery();
+            if (result.next()) {
+                return result.getInt(1);
+            }
+        } catch (SQLException e) {
+        }
+        return 0;
+    }
+
 }

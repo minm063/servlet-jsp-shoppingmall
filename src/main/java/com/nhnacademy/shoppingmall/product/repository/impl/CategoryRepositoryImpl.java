@@ -102,7 +102,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     @Override
     public List<Category> findCategories() {
         Connection connection = DbConnectionThreadLocal.getConnection();
-        String sql = "select category.* from category";
+        String sql = "select * from category order by category_id";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();

@@ -19,4 +19,6 @@ public interface ProductRepository {
     List<Product> findProducts();
 
     Optional<Product> findByProductId(int productId);
+
+    int findIndex();
 }

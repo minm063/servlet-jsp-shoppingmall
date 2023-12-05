@@ -69,4 +69,9 @@ public class ProductServiceImpl implements ProductService {
 
         return null;
     }
+
+    @Override
+    public int getIndex() {
+        return productRepository.findIndex();
+    }
 }
