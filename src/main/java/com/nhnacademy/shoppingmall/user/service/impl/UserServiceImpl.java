@@ -6,6 +6,8 @@ import com.nhnacademy.shoppingmall.user.exception.UserNotFoundException;
 import com.nhnacademy.shoppingmall.user.repository.UserRepository;
 import com.nhnacademy.shoppingmall.user.service.UserService;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,7 +48,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     @Override
     public void deleteUser(String userId) {
         //todo#4-4 회원삭제
@@ -68,4 +69,11 @@ public class UserServiceImpl implements UserService {
         throw new UserNotFoundException(userId);
     }
 
+    @Override
+    public List<User> getUsers(User.Auth auth) {
+        if (userRepository.countAll() == 0) {
+            return new ArrayList<>();
+        }
+        return userRepository.findUsers(auth);
+    }
 }

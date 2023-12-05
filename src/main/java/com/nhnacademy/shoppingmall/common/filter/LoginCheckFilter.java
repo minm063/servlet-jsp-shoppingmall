@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@WebFilter("/mypage/")
+@WebFilter("/mypage/*")
 public class LoginCheckFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
@@ -20,8 +20,9 @@ public class LoginCheckFilter extends HttpFilter {
         //todo#10 /mypage/ 하위경로의 접근은 로그인한 사용자만 접근할 수 있습니다.
         HttpSession httpSession = req.getSession(false);
 
-        if (Objects.isNull(httpSession)) {
+        if (Objects.isNull(httpSession.getAttribute("user_id"))) {
             res.sendRedirect("/index.do");
+            return;
         }
         chain.doFilter(req, res);
     }

@@ -6,11 +6,7 @@ import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.mvc.controller.ControllerFactory;
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
 import com.nhnacademy.shoppingmall.common.mvc.view.ViewResolver;
-import com.nhnacademy.shoppingmall.common.util.DbUtils;
-import com.nhnacademy.shoppingmall.controller.auth.LoginController;
 import java.io.IOException;
-import java.sql.Connection;
-import java.util.Set;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,10 +25,6 @@ public class FrontServlet extends HttpServlet {
     public void init() throws ServletException {
         //todo#7-1 controllerFactory를 초기화 합니다.
         controllerFactory = (ControllerFactory) getServletContext().getAttribute(CONTEXT_CONTROLLER_FACTORY_NAME);
-//        Set<Class<?>> classSet = Set.of(
-//                LoginController.class
-//        );
-//        controllerFactory.initialize(classSet, getServletContext());
 
         //todo#7-2 viewResolver를 초기화 합니다.
         viewResolver = new ViewResolver();
@@ -46,7 +38,6 @@ public class FrontServlet extends HttpServlet {
 
             BaseController baseController = (BaseController) controllerFactory.getController(req);
             String viewName = baseController.execute(req, resp);
-
 
             if (viewResolver.isRedirect(viewName)) {
                 String redirectUrl = viewResolver.getRedirectUrl(viewName);

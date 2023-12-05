@@ -2,12 +2,15 @@ package com.nhnacademy.shoppingmall.user.repository.impl;
 
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
 import com.nhnacademy.shoppingmall.user.domain.User;
+import com.nhnacademy.shoppingmall.user.exception.UserNotFoundException;
 import com.nhnacademy.shoppingmall.user.repository.UserRepository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -172,6 +175,53 @@ public class UserRepositoryImpl implements UserRepository {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, userId);
 
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count;
+            }
+        } catch (SQLException e) {
+        }
+        return 0;
+    }
+
+    @Override
+    public List<User> findUsers(User.Auth auth) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "select users.* from users where user_auth = ? order by created_at desc";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, auth.toString());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<User> list = new ArrayList<>();
+
+            while (resultSet.next()) {
+                User user = new User(
+                        resultSet.getString("user_id"),
+                        resultSet.getString("user_name"),
+                        resultSet.getString("user_password"),
+                        resultSet.getString("user_birth"),
+                        User.Auth.valueOf(resultSet.getString("user_auth")),
+                        resultSet.getInt("user_point"),
+                        Objects.nonNull(resultSet.getTimestamp("created_at")) ?
+                                resultSet.getTimestamp("created_at").toLocalDateTime() : null,
+                        Objects.nonNull(resultSet.getTimestamp("latest_login_at")) ?
+                                resultSet.getTimestamp("latest_login_at").toLocalDateTime() : null
+                );
+                list.add(user);
+            }
+            return list;
+        } catch (SQLException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public int countAll() {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "select count(*) from users";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 int count = resultSet.getInt(1);

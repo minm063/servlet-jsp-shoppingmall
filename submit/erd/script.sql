@@ -13,13 +13,13 @@ CREATE TABLE `users` (
 
 CREATE TABLE `product`
 (
-    `product_id`     INT           NOT NULL COMMENT '제품 아이디',
+    `product_id`     INT           NOT NULL AUTO_INCREMENT COMMENT '제품 아이디',
     `product_number` VARCHAR(10)   NOT NULL COMMENT '제품 번호',
-    `product_name`   NVARCHAR(120) NOT NULL COMMENT '제품 이름',
+    `product_name`   VARCHAR(120) NOT NULL COMMENT '제품 이름',
     `unit_cost`      DECIMAL(15)   NOT NULL COMMENT '가격',
     `description`    TEXT          NULL COMMENT '설명',
-    `product_image`  NVARCHAR(30)  NULL COMMENT '제품 이미지',
-    `thumbnail`      NVARCHAR(30)  NULL COMMENT '제품 썸네일',
+    `product_image`  VARCHAR(30)  NULL COMMENT '제품 이미지',
+    `thumbnail`      VARCHAR(30)  NULL COMMENT '제품 썸네일',
 
     CONSTRAINT pk_product PRIMARY KEY (product_id)
 );
@@ -27,17 +27,18 @@ CREATE TABLE `product`
 
 CREATE TABLE `category`
 (
-    `category_id`   INT         NOT NULL COMMENT '카테고리 아이디',
+    `category_id`   INT         NOT NULL AUTO_INCREMENT COMMENT '카테고리 아이디',
     `category_name` VARCHAR(50) NOT NULL COMMENT '카테고리 이름',
 
-    CONSTRAINT pk_category PRIMARY KEY (category_id)
+    CONSTRAINT pk_category PRIMARY KEY (category_id),
+    UNIQUE (category_name)
 );
 
 
 
 CREATE TABLE `review`
 (
-    `review_id`  INT         NOT NULL COMMENT '리뷰 아이디',
+    `review_id`  INT         NOT NULL AUTO_INCREMENT COMMENT '리뷰 아이디',
     `rating`     INT         NOT NULL COMMENT '별점',
     `comments`   TEXT        NULL COMMENT '리뷰 내용',
     `product_id` INT         NOT NULL COMMENT '제품 아이디',
@@ -50,7 +51,7 @@ CREATE TABLE `review`
 
 CREATE TABLE `user_address`
 (
-    `address_id` INT          NOT NULL COMMENT '주소 아이디',
+    `address_id` INT          NOT NULL AUTO_INCREMENT COMMENT '주소 아이디',
     `address`    VARCHAR(255) NOT NULL COMMENT '주소',
     `user_id`    VARCHAR(50)  NOT NULL COMMENT '아이디',
 
@@ -61,7 +62,7 @@ CREATE TABLE `user_address`
 
 CREATE TABLE `order`
 (
-    `order_id`   INT         NOT NULL COMMENT '주문 아이디',
+    `order_id`   INT         NOT NULL AUTO_INCREMENT COMMENT '주문 아이디',
     `order_date` DATETIME    NOT NULL COMMENT '주문일자',
     `ship_date`  DATETIME    NOT NULL COMMENT '배송일자',
     `user_id`    VARCHAR(50) NOT NULL COMMENT '아이디',
@@ -86,7 +87,7 @@ CREATE TABLE `order_detail`
 
 CREATE TABLE `cart`
 (
-    `record_id`    INT         NOT NULL COMMENT '장바구니 아이디',
+    `record_id`    INT         NOT NULL AUTO_INCREMENT COMMENT '장바구니 아이디',
     `quantity`     INT         NOT NULL COMMENT '수량',
     `date_created` DATETIME    NOT NULL COMMENT '생성 일자',
     `product_id`   INT         NOT NULL COMMENT '제품 아이디',
@@ -99,7 +100,7 @@ CREATE TABLE `cart`
 
 CREATE TABLE `user_point`
 (
-    `point_id`      INT         NOT NULL COMMENT '포인트 아이디',
+    `point_id`      INT         NOT NULL AUTO_INCREMENT COMMENT '포인트 아이디',
     `point_changed` INT         NOT NULL COMMENT '증감 포인트',
     `point_date`    DATETIME    NOT NULL COMMENT '사용 일자',
     `user_id`       VARCHAR(50) NOT NULL COMMENT '아이디',

@@ -3,15 +3,15 @@ package com.nhnacademy.shoppingmall.controller.auth;
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.user.domain.User;
+import com.nhnacademy.shoppingmall.user.exception.UserNotFoundException;
 import com.nhnacademy.shoppingmall.user.repository.impl.UserRepositoryImpl;
 import com.nhnacademy.shoppingmall.user.service.UserService;
 import com.nhnacademy.shoppingmall.user.service.impl.UserServiceImpl;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@RequestMapping(method = RequestMapping.Method.POST,value = "/loginAction.do")
+@RequestMapping(method = RequestMapping.Method.POST, value = "/loginAction.do")
 public class LoginPostController implements BaseController {
 
     private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
@@ -23,13 +23,30 @@ public class LoginPostController implements BaseController {
         String id = req.getParameter("user_id");
         String pw = req.getParameter("user_password");
         User user = userService.getUser(id);
-        userService.doLogin(id, pw);
+        try {
+            userService.doLogin(id, pw);
 
-        HttpSession session = req.getSession(true);
-        session.setMaxInactiveInterval(INACTIVE_INTERVAL_TIME);
-        session.setAttribute("role", user.getUserAuth());
-        session.setAttribute("user_id", id);
+            HttpSession session = req.getSession(true);
+            session.setMaxInactiveInterval(INACTIVE_INTERVAL_TIME);
+            session.setAttribute("user_id", id);
+            session.setAttribute("user_name", user.getUserName());
 
-        return "shop/main/index";
+            User.Auth role = user.getUserAuth();
+            String compactRole;
+            if (role.equals(User.Auth.ROLE_USER)) {
+                compactRole = "user";
+            } else {
+                compactRole = "admin";
+            }
+
+            session.setAttribute("role", role);
+            session.setAttribute("compactRole", compactRole);
+
+            return "shop/main/index";
+//            return "redirect:/index.do";
+        } catch (UserNotFoundException e) {
+            return "redirect:/login.do";
+        }
+
     }
 }
