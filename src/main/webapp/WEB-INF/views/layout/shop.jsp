@@ -42,12 +42,12 @@
 
                 <div class="text-end">
                     <c:choose>
-                        <c:when test="${empty sessionScope.user_name}">
+                        <c:when test="${empty sessionScope.userName}">
                             <a class="btn btn-outline-light me-2" href="/login.do">로그인</a>
                             <a class="btn btn-warning" href="signup.do">회원가입</a>
                         </c:when>
                         <c:otherwise>
-                            <a href="#" class="btn btn-outline-light me-2">${sessionScope.user_name}</a>
+                            <a href="/mypage/${sessionScope.compactRole}.do" class="btn btn-outline-light me-2">${sessionScope.userName}</a>
                             <form method="post" action="/logout.do" class="btn btn-warning">
                                 <button type="submit" class="btn btn-warning" href="/logout.do">로그아웃</button>
                             </form>

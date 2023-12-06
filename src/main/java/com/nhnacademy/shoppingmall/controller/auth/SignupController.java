@@ -16,7 +16,7 @@ public class SignupController implements BaseController {
         try {
             HttpSession session = req.getSession(false);
 
-            if (Objects.nonNull(session) && Objects.nonNull(session.getAttribute("user_id"))) {
+            if (Objects.nonNull(session) && Objects.nonNull(session.getAttribute("userId"))) {
                 resp.sendRedirect("redirect:/index.do");
             }
             return "shop/signup/signup_form";

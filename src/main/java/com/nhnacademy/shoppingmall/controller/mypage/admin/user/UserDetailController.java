@@ -19,6 +19,6 @@ public class UserDetailController implements BaseController {
         String userId = req.getParameter("id");
         User user = service.getUser(userId);
         req.setAttribute("user", user);
-        return "/shop/user/mypage/manage/user_detail";
+        return "/shop/mypage/admin/user_detail";
     }
 }

@@ -12,6 +12,8 @@ public interface UserService {
 
     void updateUser(User user);
 
+    void updateByUser(User user);
+
     void deleteUser(String userId);
 
     User doLogin(String userId, String userPassword);

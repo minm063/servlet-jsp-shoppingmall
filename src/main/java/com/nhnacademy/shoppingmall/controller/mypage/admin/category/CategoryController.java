@@ -9,7 +9,9 @@ import com.nhnacademy.shoppingmall.product.service.impl.CategoryServiceImpl;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequestMapping(method = RequestMapping.Method.GET, value = "/mypage/admin/category.do")
 public class CategoryController implements BaseController {
 
@@ -17,8 +19,9 @@ public class CategoryController implements BaseController {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
+        log.info("@@@@ category controller @@@@");
         List<Category> categories = categoryService.getCategories();
         req.setAttribute("categories", categories);
-        return "shop/user/mypage/manage/category";
+        return "shop/mypage/admin/category";
     }
 }

@@ -20,7 +20,7 @@ public class LoginCheckFilter extends HttpFilter {
         //todo#10 /mypage/ 하위경로의 접근은 로그인한 사용자만 접근할 수 있습니다.
         HttpSession httpSession = req.getSession(false);
         log.info("session: {}", httpSession);
-        if (Objects.isNull(httpSession) || Objects.isNull(httpSession.getAttribute("user_id"))) {
+        if (Objects.isNull(httpSession) || Objects.isNull(httpSession.getAttribute("userId"))) {
             res.sendRedirect("/index.do");
             return;
         }

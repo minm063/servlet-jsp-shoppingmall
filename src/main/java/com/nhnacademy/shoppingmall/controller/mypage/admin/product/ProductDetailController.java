@@ -52,6 +52,6 @@ public class ProductDetailController implements BaseController {
         req.setAttribute("category", categories);
 
 
-        return "/shop/user/mypage/manage/product_detail";
+        return "/shop/mypage/admin/product_detail";
     }
 }

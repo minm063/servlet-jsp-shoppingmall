@@ -23,10 +23,10 @@ public class ApplicationListener implements ServletContextListener {
         DbConnectionThreadLocal.initialize();
 
         User admin =
-                new User("admin", "admin", "12345", "", User.Auth.ROLE_ADMIN, 1_000_000, LocalDateTime.now(), null);
+                new User("admin", "admin", "12345", "20001029", User.Auth.ROLE_ADMIN, 1_000_000, LocalDateTime.now(), null);
 
         User user =
-                new User("user1", "user", "12345", "", User.Auth.ROLE_USER, 1_000_000, LocalDateTime.now(), null);
+                new User("user1", "user", "12345", "20230421", User.Auth.ROLE_USER, 1_000_000, LocalDateTime.now(), null);
 
         if (Objects.isNull(userService.getUser("admin"))) {
             userService.saveUser(admin);

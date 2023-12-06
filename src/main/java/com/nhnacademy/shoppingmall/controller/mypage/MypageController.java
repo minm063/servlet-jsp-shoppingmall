@@ -13,6 +13,6 @@ public class MypageController implements BaseController {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession(false);
-        return "shop/user/mypage/" + session.getAttribute("compactRole");
+        return "shop/mypage/" + session.getAttribute("compactRole");
     }
 }

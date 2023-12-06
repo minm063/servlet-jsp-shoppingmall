@@ -22,6 +22,6 @@ public class CategoryDetailController implements BaseController {
             Category category = service.getCategory(Integer.parseInt(categoryId));
             req.setAttribute("category", category);
         }
-        return "/shop/user/mypage/manage/category_detail";
+        return "/shop/mypage/admin/category_detail";
     }
 }

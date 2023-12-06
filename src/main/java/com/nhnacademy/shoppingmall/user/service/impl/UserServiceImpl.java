@@ -48,6 +48,13 @@ public class UserServiceImpl implements UserService {
         userRepository.update(user);
     }
 
+    @Override
+    public void updateByUser(User user) {
+        if (userRepository.countByUserId(user.getUserId()) == 0) {
+            throw new UserNotFoundException(user.getUserId());
+        }
+        userRepository.updateByUser(user);
+    }
 
     @Override
     public void deleteUser(String userId) {

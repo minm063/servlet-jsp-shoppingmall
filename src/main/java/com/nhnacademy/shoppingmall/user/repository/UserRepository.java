@@ -17,6 +17,8 @@ public interface UserRepository {
 
     int update(User user);
 
+    int updateByUser(User user);
+
     int updateLatestLoginAtByUserId(String userId, LocalDateTime latestLoginAt);
 
     int countByUserId(String userId);

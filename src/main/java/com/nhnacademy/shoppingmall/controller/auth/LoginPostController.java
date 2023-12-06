@@ -10,7 +10,9 @@ import com.nhnacademy.shoppingmall.user.service.impl.UserServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequestMapping(method = RequestMapping.Method.POST, value = "/loginAction.do")
 public class LoginPostController implements BaseController {
 
@@ -28,8 +30,8 @@ public class LoginPostController implements BaseController {
 
             HttpSession session = req.getSession(true);
             session.setMaxInactiveInterval(INACTIVE_INTERVAL_TIME);
-            session.setAttribute("user_id", id);
-            session.setAttribute("user_name", user.getUserName());
+            session.setAttribute("userId", id);
+            session.setAttribute("userName", user.getUserName());
 
             User.Auth role = user.getUserAuth();
             String compactRole;
@@ -41,6 +43,8 @@ public class LoginPostController implements BaseController {
 
             session.setAttribute("role", role);
             session.setAttribute("compactRole", compactRole);
+
+            log.info("session: {},{},{},{}", id, user.getUserName(), role, compactRole);
 
             return "shop/main/index";
 //            return "redirect:/index.do";

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RequestMapping(method = RequestMapping.Method.POST, value = "/mypage/admin/product/delete.do")
-public class ProductDeleteController implements BaseController {
+public class ProductDeletePostController implements BaseController {
 
     private final ProductService service = new ProductServiceImpl(new ProductRepositoryImpl());
 

@@ -64,6 +64,7 @@ public class UserRepositoryImpl implements UserRepository {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, userId);
 
+
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 User user = new User(
@@ -141,6 +142,25 @@ public class UserRepositoryImpl implements UserRepository {
             preparedStatement.setString(4, user.getUserAuth().toString());
             preparedStatement.setInt(5, user.getUserPoint());
             preparedStatement.setString(6, user.getUserId());
+
+            int result = preparedStatement.executeUpdate();
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int updateByUser(User user) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql =
+                "update users set user_name=?, user_password=?, user_birth=? where user_id=?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, user.getUserName());
+            preparedStatement.setString(2, user.getUserPassword());
+            preparedStatement.setString(3, user.getUserBirth());
+            preparedStatement.setString(4, user.getUserId());
 
             int result = preparedStatement.executeUpdate();
             return result;
