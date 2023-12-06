@@ -33,6 +33,14 @@ public class Product {
         this.thumbnail = thumbnail;
     }
 
+    public Product(String productName, BigDecimal unitCost, String description, String productImage, String thumbnail) {
+        this.productName = productName;
+        this.unitCost = unitCost;
+        this.description = description;
+        this.productImage = productImage;
+        this.thumbnail = thumbnail;
+    }
+
     public int getProductId() {
         return productId;
     }
@@ -59,5 +67,13 @@ public class Product {
 
     public String getThumbnail() {
         return thumbnail;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }

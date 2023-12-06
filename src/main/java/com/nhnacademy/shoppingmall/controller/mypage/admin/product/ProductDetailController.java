@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequestMapping(method = RequestMapping.Method.GET, value = "/mypage/admin/product/detail.do")
 public class ProductDetailController implements BaseController {
 

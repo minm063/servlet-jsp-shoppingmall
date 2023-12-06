@@ -11,65 +11,87 @@ import com.nhnacademy.shoppingmall.product.service.ProductCategoryService;
 import com.nhnacademy.shoppingmall.product.service.ProductService;
 import com.nhnacademy.shoppingmall.product.service.impl.ProductCategoryServiceImpl;
 import com.nhnacademy.shoppingmall.product.service.impl.ProductServiceImpl;
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.TreeSet;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+@Slf4j
 @RequestMapping(method = RequestMapping.Method.POST, value = "/mypage/admin/product/create.do")
 public class ProductCreateController implements BaseController {
 
     private final ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
     private final ProductCategoryService productCategoryService =
             new ProductCategoryServiceImpl(new ProductCategoryRepositoryImpl());
-    private final static String DEFAULT_PATH = "/Users/mj/nhn-cia/java-servlet-jsp-shoppingmall/src/main/webapp/resources/";
+    private final String DEFAULT_PATH =
+            "/Users/mj/nhn-cia/java-servlet-jsp-shoppingmall/src/main/webapp/resources/";
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+
         String productNumber = String.valueOf(ThreadLocalRandom.current().nextLong(100000000L, 1000000000L));
-        String productName = req.getParameter("productName");
-        String description = req.getParameter("description");
+        Map<String, String> map = new HashMap<>();
 
-        Part part = req.getPart("productImage");
-        System.out.println(part);
-        String productImage = getFilename(part);
-        System.out.println("product image " + productImage);
-        String imagePath = null;
-        if (!productImage.isEmpty()) {
-            System.out.println("empty?");
-            part.write(DEFAULT_PATH + productImage);
-            imagePath = DEFAULT_PATH + productImage;
+        if (ServletFileUpload.isMultipartContent(req)) {
+            try {
+                List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(req);
+                for (FileItem item : items) {
+                    if (!item.isFormField()) {
+                        // 파일 처리 로직
+                        String fileName = null;
+                        if (item.getFieldName().equals("thumbnail")) {
+                            fileName = "no-image.png";
+                        }
+                        if (!item.getName().isEmpty() && item.getName() != null) {
+                            fileName = new File(LocalDateTime.now() + "_" + item.getName()).getName();
+                            log.info(DEFAULT_PATH + fileName);
+                            if (!new File(DEFAULT_PATH + fileName).exists()) {
+                                item.write(new File(DEFAULT_PATH + fileName));
+                            }
+                        }
+                        log.info(item.getFieldName(), fileName);
+                        map.put(item.getFieldName(), fileName);
+                    } else {
+                        String fieldName = item.getFieldName();
+                        String fieldValue = item.getString("UTF-8");
+                        log.info("{}, {}", fieldName, fieldValue);
+                        map.put(fieldName, fieldValue);
+                    }
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
         }
-
-        String thumbnailPath = DEFAULT_PATH + "no-image.png";
-        part = req.getPart("thumbnail");
-        String thumbnail = getFilename(part);
-        System.out.println("thumbnail " + thumbnail);
-        if (!thumbnail.isEmpty()) {
-            part.write(DEFAULT_PATH + thumbnail);
-            thumbnailPath = DEFAULT_PATH + thumbnail;
-        }
-
 
         TreeSet<Integer> treeSet = new TreeSet<>();
-        treeSet.add(Integer.parseInt(req.getParameter("category1")));
-        treeSet.add(Integer.parseInt(req.getParameter("category2")));
-        treeSet.add(Integer.parseInt(req.getParameter("category3")));
+        treeSet.add(Integer.valueOf(map.get("category1")));
+        treeSet.add(Integer.valueOf(map.get("category2")));
+        treeSet.add(Integer.valueOf(map.get("category3")));
 
-        if (Objects.nonNull(productName) && Objects.nonNull(req.getParameter("unitCost"))) {
-            BigDecimal unitCost = new BigDecimal(req.getParameter("unitCost"));
-            Product product = new Product(productNumber, productName, unitCost, description, imagePath, thumbnailPath);
-            productService.saveProduct(product);
-
-            int productId = productService.getIndex();
+        if (Objects.nonNull(map.get("productName")) && Objects.nonNull(map.get("unitCost"))) {
             if (treeSet.size() == 1 && treeSet.last() == 0) {
                 return "redirect:/mypage/admin/product/detail.do";
             }
+            BigDecimal unitCost = new BigDecimal(map.get("unitCost"));
+            Product product = new Product(productNumber, map.get("productName"), unitCost, map.get("description"),
+                    map.get("productImage"), map.get("thumbnail"));
+            productService.saveProduct(product);
+
+            int productId = productService.getIndex();
             for (Integer categoryId : treeSet) {
                 if (categoryId != 0) {
                     productCategoryService.saveProductCategory(new ProductCategory(productId, categoryId));
@@ -78,19 +100,6 @@ public class ProductCreateController implements BaseController {
 
             return "redirect:/mypage/admin.do";
         }
-
         return "redirect:/mypage/admin/product/detail.do";
-    }
-
-    private String getFilename(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        String[] split = contentDisp.split(";");
-        for (int i = 0; i < split.length; i++) {
-            String temp = split[i];
-            if (temp.trim().startsWith("filename")) {
-                return temp.substring(temp.indexOf("=") + 2, temp.length() - 1);
-            }
-        }
-        return "";
     }
 }

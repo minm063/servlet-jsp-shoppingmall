@@ -18,13 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequestMapping(method = RequestMapping.Method.GET, value = "/mypage/admin/product.do")
 public class ProductController implements BaseController {
 
-    ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
-    CategoryService categoryService = new CategoryServiceImpl(new CategoryRepositoryImpl());
-    ProductCategoryService productCategoryService = new ProductCategoryServiceImpl(new ProductCategoryRepositoryImpl());
+    private final ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
+    private final CategoryService categoryService = new CategoryServiceImpl(new CategoryRepositoryImpl());
+    private final ProductCategoryService productCategoryService =
+            new ProductCategoryServiceImpl(new ProductCategoryRepositoryImpl());
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -48,6 +51,7 @@ public class ProductController implements BaseController {
         req.setAttribute("myCategory", myCategoryName);
         req.setAttribute("category", categories);
         req.setAttribute("products", list);
+
         return "shop/user/mypage/manage/product";
     }
 }
