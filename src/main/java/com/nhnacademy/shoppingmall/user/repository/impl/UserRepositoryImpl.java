@@ -233,6 +233,24 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public int countAll(User.Auth auth) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "select count(*) from users where user_auth =?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, auth.toString());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count;
+            }
+        } catch (SQLException e) {
+        }
+        return 0;
+    }
+
+    @Override
     public Page<User> findUserByPage(User.Auth auth, int page, int pageSize) {
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql = "select * from users where user_auth = ? order by created_at desc limit ?, ?";
@@ -266,7 +284,7 @@ public class UserRepositoryImpl implements UserRepository {
 
             long total = 0;
             if (!userList.isEmpty()) {
-                total = countAll();
+                total = countAll(auth);
             }
             return new Page<User>(userList, total);
         } catch (SQLException e) {
