@@ -22,7 +22,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="#">
+                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/mypage/user/address.do">
                                 주소 관리
                             </a>
                         </li>
