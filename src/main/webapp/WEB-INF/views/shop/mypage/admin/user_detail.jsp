@@ -41,4 +41,4 @@
         </tbody>
     </table>
 </div>
-<button class="btn btn-primary" type="button" onclick="location.href='/mypage/admin.do'">뒤로 가기</button>
+<button class="btn btn-primary" type="button" onclick="location.href='/admin.do'">뒤로 가기</button>

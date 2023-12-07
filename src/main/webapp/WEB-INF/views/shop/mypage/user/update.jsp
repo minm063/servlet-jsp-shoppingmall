@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<form action="/mypage/user/updateAction.do" method="post">
+<form action="/mypage/updateAction.do" method="post">
     <div class="table-responsive">
         <table class="table table-striped table-sm">
             <tbody>
@@ -26,7 +26,7 @@
             </tbody>
         </table>
     </div>
-    <button class="btn btn-primary" type="button" onclick="location.href='/mypage/admin.do'">취소</button>
+    <button class="btn btn-primary" type="button" onclick="location.href='/admin.do'">취소</button>
     <button class="btn btn-primary" type="submit">수정하기</button>
 
 </form>

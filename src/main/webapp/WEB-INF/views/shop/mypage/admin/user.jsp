@@ -19,7 +19,7 @@
         <c:forEach var="user" items="${requestScope.users.getContent()}" varStatus="status">
             <tr>
                 <td>
-                    <a href="/mypage/admin/userDetail.do?id=${user.userId}">${status.index+1+(requestScope.page-1)*10}</a>
+                    <a href="/admin/userDetail.do?id=${user.userId}">${status.index+1+(requestScope.page-1)*10}</a>
                 </td>
                 <td>${user.userName}</td>
                 <td>${user.userPassword}</td>
@@ -38,7 +38,7 @@
     <ul class="pagination justify-content-center">
         <c:forEach var="index" begin="${requestScope.startPage}" end="${requestScope.endPage}" step="1">
             <li class="page-item">
-                <a class="page-link" href="/mypage/admin/user.do?page=${index}&id=${auth}">
+                <a class="page-link" href="/admin/user.do?page=${index}&id=${auth}">
                         ${index}
                 </a>
             </li>

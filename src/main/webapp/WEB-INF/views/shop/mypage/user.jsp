@@ -7,7 +7,7 @@
                 <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/mypage/user/update.do">
+                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/mypage/update.do">
                                 회원 정보 수정
                             </a>
                         </li>
@@ -22,12 +22,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/mypage/user/address.do">
+                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/mypage/address.do">
                                 주소 관리
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/mypage/user/delete.do">
+                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/mypage/delete.do">
                                 회원 탈퇴
                             </a>
                         </li>

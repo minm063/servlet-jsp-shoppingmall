@@ -9,25 +9,25 @@
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page"
-                               href="/mypage/admin/category.do">
+                               href="/admin/category.do">
                                 상품 카테고리 관리
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page"
-                               href="/mypage/admin/product.do">
+                               href="/admin/product.do">
                                 상품 관리
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page"
-                               href="/mypage/admin/admin.do?id=0">
+                               href="/admin/admin.do?id=0">
                                 관리자 관리
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page"
-                               href="/mypage/admin/user.do?id=1" >
+                               href="/admin/user.do?id=1" >
                                 일반 회원 관리
                             </a>
                         </li>

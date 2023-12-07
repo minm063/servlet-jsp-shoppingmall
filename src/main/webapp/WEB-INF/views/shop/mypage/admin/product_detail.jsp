@@ -6,7 +6,7 @@
     <c:set var="product" value="${product}"/>
 </c:if>
 
-<form action="${empty product?'/mypage/admin/product/create.do':'/mypage/admin/product/update.do'}" method="post"
+<form action="${empty product?'/admin/product/create.do':'/admin/product/update.do'}" method="post"
       enctype="multipart/form-data">
 
     <div class="table-responsive">
@@ -95,7 +95,7 @@
             </tbody>
         </table>
     </div>
-    <button class="btn btn-primary" type="button" onclick="location.href='/mypage/admin.do'">뒤로 가기</button>
+    <button class="btn btn-primary" type="button" onclick="location.href='/admin.do'">뒤로 가기</button>
     <button class="btn btn-primary" type="submit">
         <c:choose>
             <c:when test="${empty product}">

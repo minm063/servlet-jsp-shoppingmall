@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@RequestMapping(method = RequestMapping.Method.GET, value = {"/mypage/user.do", "/mypage/admin.do"})
+@RequestMapping(method = RequestMapping.Method.GET, value = {"/mypage.do", "/admin.do"})
 public class MypageController implements BaseController {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {

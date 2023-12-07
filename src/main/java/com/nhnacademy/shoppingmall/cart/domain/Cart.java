@@ -13,4 +13,31 @@ public class Cart {
     private int productId;
 
     private String userId;
+
+    public Cart(int quantity, LocalDateTime dateCreated, int productId, String userId) {
+        this.quantity = quantity;
+        this.dateCreated = dateCreated;
+        this.productId = productId;
+        this.userId = userId;
+    }
+
+    public int getRecordId() {
+        return recordId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public LocalDateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
 }

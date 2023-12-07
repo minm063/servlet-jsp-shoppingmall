@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-<form action="/mypage/user/address/delete.do" method="post">
+<form action="/mypage/address/delete.do" method="post">
 <div class="table-responsive">
     <table class="table table-striped table-sm">
         <thead>
@@ -20,7 +20,7 @@
                 </th>
                 <th>${address.address}</th>
                 <th>
-                    <a href="/mypage/user/address/update.do?id=${address.addressId}">수정</a>
+                    <a href="/mypage/address/update.do?id=${address.addressId}">수정</a>
                 </th>
                 <th>
                     <input type="hidden" name="id" value="${address.addressId}">
@@ -32,7 +32,7 @@
     </table>
 </div>
 </form>
-<form action="/mypage/user/address/create.do" method="post">
+<form action="/mypage/address/create.do" method="post">
     <input type="text" name="address" required>
     <button class="btn btn-primary">주소 추가하기</button>
 </form>

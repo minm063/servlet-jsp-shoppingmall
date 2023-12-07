@@ -25,7 +25,7 @@
         <c:forEach var="product" items="${requestScope.productList.getContent()}" varStatus="status">
             <tr>
                 <td>
-                    <a href="/mypage/admin/product/detail.do?id=${product.productId}">${status.index+1+(requestScope.page-1)*10}</a>
+                    <a href="/admin/product/detail.do?id=${product.productId}">${status.index+1+(requestScope.page-1)*10}</a>
                 </td>
                 <td colspan="3">
                     <c:forEach var="category" items="${requestScope.productCategory.get(status.index)}" varStatus="status2">
@@ -40,7 +40,7 @@
                 <td>${product.productImage}</td>
                 <td>${product.thumbnail}</td>
                 <td>
-                    <form action="/mypage/admin/product/delete.do?id=${product.productId}" method="post">
+                    <form action="/admin/product/delete.do?id=${product.productId}" method="post">
                         <button class="btn btn-primary">delete</button>
                     </form>
                 </td>
@@ -49,14 +49,14 @@
         </tbody>
     </table>
 </div>
-<button class="btn btn-primary" onclick="location.href='/mypage/admin/product/detail.do'">
+<button class="btn btn-primary" onclick="location.href='/admin/product/detail.do'">
     상품 추가하기
 </button>
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
         <c:forEach var="index" begin="${requestScope.startPage}" end="${requestScope.endPage}" step="1">
             <li class="page-item">
-                <a class="page-link" href="/mypage/admin/product.do?page=${index}">
+                <a class="page-link" href="/admin/product.do?page=${index}">
                         ${index}
                 </a>
             </li>
