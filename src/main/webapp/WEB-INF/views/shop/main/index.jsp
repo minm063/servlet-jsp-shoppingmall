@@ -12,7 +12,6 @@
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h2>최근 본 상품</h2>
             <div class="btn-toolbar mb-2 mb-md-0">
-
                 <form action="" method="post">
                     <label for="category"></label>
                     <select name="category" id="category">
@@ -33,10 +32,10 @@
 
 <div>
     <section>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" >
             <!-- 최근 본 상품 -->
-            <c:forEach var="product" items="${requestScope.products.getContent()}" varStatus="status1">
-                <div class="col">
+            <c:forEach var="product" items="${requestScope.latestProduct}" varStatus="status1">
+                <div class="col" style="width: 20%;">
                     <div class="card shadow-sm" onclick="location.href='/index/product.do?id=${product.productId}'">
                         <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
                              xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
@@ -57,7 +56,6 @@
     </section>
 </div>
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    <!-- 최근 본 상품 -->
     <c:forEach var="product" items="${requestScope.products.getContent()}" varStatus="status1">
         <div class="col">
             <div class="card shadow-sm" onclick="location.href='/index/product.do?id=${product.productId}'">
