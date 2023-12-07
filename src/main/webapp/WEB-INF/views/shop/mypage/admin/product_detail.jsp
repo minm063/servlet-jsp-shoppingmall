@@ -6,7 +6,8 @@
     <c:set var="product" value="${product}"/>
 </c:if>
 
-<form action="${empty product?'/mypage/admin/product/create.do':'/mypage/admin/product/update.do'}" method="post" enctype="multipart/form-data" >
+<form action="${empty product?'/mypage/admin/product/create.do':'/mypage/admin/product/update.do'}" method="post"
+      enctype="multipart/form-data">
 
     <div class="table-responsive">
         <table class="table table-striped table-sm">
@@ -15,15 +16,16 @@
                 <th scope="row">product id</th>
                 <td><input type="text" value="${product.productId}" name="productId" readonly></td>
             </tr>
-            <c:forEach var="defaultCategoryId" items="${requestScope.defaultCategoryId}" varStatus="status">
+            <c:forEach var="defaultValue" items="${requestScope.defaultCategory}" varStatus="status">
                 <tr>
                     <th scope="row">category ${status.index+1}</th>
                     <td>
                         <select name="category${status.index+1}" id="category${status.index+1}">
                             <option value="0">선택하지 않음</option>
-                            <c:forEach var="category" items="${requestScope.category}">
+                            <c:forEach var="category" items="${requestScope.categoryList}">
                                 <option value="${category.categoryId}"
-                                        <c:if test="${category.categoryId eq defaultCategoryId}">selected</c:if>>
+                                        <c:if test="${category.categoryId eq defaultValue}">selected</c:if>
+                                >
                                         ${category.categoryName}
                                 </option>
                             </c:forEach>
@@ -37,26 +39,57 @@
             </tr>
             <tr>
                 <th scope="row">product name</th>
-                <td><input type="text" value="${product.productName}" name="productName"></td>
+                <td><input type="text" value="${product.productName}" name="productName" required></td>
             </tr>
             <tr>
                 <th scope="row">cost</th>
-                <td><input type="text" value="${product.unitCost}" name="unitCost"></td>
+                <td><input type="text" value="${product.unitCost}" name="unitCost" required></td>
             </tr>
             <tr>
                 <th scope="row">description</th>
                 <td><input type="text" value="${product.description}" name="description"></td>
             </tr>
+            <c:if test="${not empty product}">
+                <tr>
+                    <th scope="row">기존 이미지</th>
+                    <td>
+                        <img src="${product.productImage}" alt="기존 이미지">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">기존 이미지 삭제</th>
+                    <td>
+                        <input type="checkbox" id="deletePreviousProductImage" name="deletePreviousProductImage" value="delete">
+                    </td>
+                </tr>
+            </c:if>
             <tr>
                 <th scope="row">product image</th>
                 <td>
                     <input type="file" name="productImage" accept="image/*">
+                    <input type="hidden" name="previousProductImage" value="${product.productImage}">
                 </td>
             </tr>
+            <c:if test="${not empty product}">
+                <tr>
+                    <th scope="row">기존 썸네일</th>
+                    <td>
+                        <img src="${product.thumbnail}" alt="기존 썸네일">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">기존 이미지 삭제</th>
+                    <td>
+                        <input type="checkbox" id="deletePreviousThumbnail" name="deletePreviousThumbnail" value="delete">
+                    </td>
+                </tr>
+            </c:if>
+
             <tr>
                 <th scope="row">thumbnail</th>
                 <td>
                     <input type="file" name="thumbnail" accept="image/*">
+                    <input type="hidden" name="previousThumbnail" value="${product.thumbnail}">
                 </td>
             </tr>
             </tbody>

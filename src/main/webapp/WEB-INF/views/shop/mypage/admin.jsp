@@ -9,25 +9,25 @@
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page"
-                               onclick="includePage('/mypage/admin/category.do')">
+                               href="/mypage/admin/category.do">
                                 상품 카테고리 관리
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page"
-                               onclick="includePage('/mypage/admin/product.do')">
+                               href="/mypage/admin/product.do">
                                 상품 관리
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page"
-                               onclick="includePage('/mypage/admin/admin.do?id=0')">
+                               href="/mypage/admin/admin.do?id=0">
                                 관리자 관리
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page"
-                               onclick="includePage('/mypage/admin/user.do?id=1')">
+                               href="/mypage/admin/user.do?id=1" >
                                 일반 회원 관리
                             </a>
                         </li>
@@ -42,15 +42,3 @@
 </div>
 
 </body>
-<script>
-    function includePage(page) {
-        const xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById('includedContent').innerHTML = this.responseText;
-            }
-        };
-        xhttp.open('GET', page, true);
-        xhttp.send();
-    }
-</script>

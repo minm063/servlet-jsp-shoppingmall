@@ -1,10 +1,14 @@
 package com.nhnacademy.shoppingmall.product.service;
 
+import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.product.domain.Product;
 import java.util.List;
 
 public interface ProductService {
     Product getProduct(int productId);
+
+    Product getProductByPath(int productId, String path);
+
     Product getProductByProductName(String productName);
 
     void saveProduct(Product product);
@@ -16,4 +20,11 @@ public interface ProductService {
     List<Product> getProducts();
 
     int getIndex();
+
+    int getTotalCount();
+
+    Page<Product> getProductsOnPage(int page, int pageSize);
+
+
+    Page<Product> getProductsOnPageByPath(int page, int pageSize, String path);
 }

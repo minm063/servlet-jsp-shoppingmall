@@ -30,10 +30,8 @@ public class ViewResolver {
         // = /WEB-INF/views/main/index.jsp
         // viewName = main/index
         if (viewName.startsWith("/")) {
-            log.info("/: {}, {}", prefix, postfix);
             return prefix.substring(0, prefix.length() - 1) + viewName + postfix;
         }
-        log.info("path: {}, {}, {}", prefix, viewName, postfix);
         return prefix + viewName + postfix;
     }
 
@@ -58,7 +56,7 @@ public class ViewResolver {
         */
 
         log.info(viewName);
-        if ("/[\\W\\w]+\\/mypage\\/admin\\/[a-zA-Z]+".matches(viewName)) {
+        if (viewName.contains("/admin/")) {
             return DEFAULT_ADMIN_LAYOUT;
         }
         return DEFAULT_SHOP_LAYOUT;

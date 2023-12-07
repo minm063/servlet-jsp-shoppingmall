@@ -4,7 +4,7 @@
     <table class="table table-striped table-sm">
         <thead>
         <tr>
-            <th>id</th>
+            <th>no</th>
             <th>name</th>
             <th>password</th>
             <th>birth</th>
@@ -16,9 +16,11 @@
         </thead>
         <tbody>
 
-        <c:forEach var="user" items="${requestScope.users.getContent()}">
+        <c:forEach var="user" items="${requestScope.users.getContent()}" varStatus="status">
             <tr>
-                <td><a href="/mypage/admin/userDetail.do?id=${user.userId}">${user.userId}</a></td>
+                <td>
+                    <a href="/mypage/admin/userDetail.do?id=${user.userId}">${status.index+1+(requestScope.page-1)*10}</a>
+                </td>
                 <td>${user.userName}</td>
                 <td>${user.userPassword}</td>
                 <td>${user.userBirth}</td>

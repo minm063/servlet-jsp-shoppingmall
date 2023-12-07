@@ -79,20 +79,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsers(User.Auth auth) {
-        if (userRepository.countAll() == 0) {
+        if (userRepository.totalCount() == 0) {
             return new ArrayList<>();
         }
         return userRepository.findUsers(auth);
     }
 
     @Override
-    public int totalCount() {
-        return userRepository.countAll();
+    public int getTotalCount() {
+        return userRepository.totalCount();
     }
 
     @Override
     public Page<User> getUserByPage(User.Auth auth, int page, int pageSize) {
-        if (userRepository.countAll() == 0) {
+        if (userRepository.totalCount(auth) == 0) {
             throw new UserNotFoundException(auth.toString());
         }
 

@@ -5,6 +5,7 @@ import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.product.domain.Product;
 import com.nhnacademy.shoppingmall.product.domain.ProductCategory;
+import com.nhnacademy.shoppingmall.product.repository.impl.CategoryRepositoryImpl;
 import com.nhnacademy.shoppingmall.product.repository.impl.ProductCategoryRepositoryImpl;
 import com.nhnacademy.shoppingmall.product.repository.impl.ProductRepositoryImpl;
 import com.nhnacademy.shoppingmall.product.service.ProductCategoryService;
@@ -35,7 +36,7 @@ public class ProductCreatePostController implements BaseController {
 
     private final ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
     private final ProductCategoryService productCategoryService =
-            new ProductCategoryServiceImpl(new ProductCategoryRepositoryImpl());
+            new ProductCategoryServiceImpl(new ProductCategoryRepositoryImpl(), new ProductRepositoryImpl(), new CategoryRepositoryImpl());
     private final String DEFAULT_PATH =
             "/Users/mj/nhn-cia/java-servlet-jsp-shoppingmall/src/main/webapp/resources/";
 

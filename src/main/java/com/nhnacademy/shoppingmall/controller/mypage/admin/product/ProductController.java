@@ -2,9 +2,9 @@ package com.nhnacademy.shoppingmall.controller.mypage.admin.product;
 
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
+import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.product.domain.Category;
 import com.nhnacademy.shoppingmall.product.domain.Product;
-import com.nhnacademy.shoppingmall.product.domain.ProductCategory;
 import com.nhnacademy.shoppingmall.product.repository.impl.CategoryRepositoryImpl;
 import com.nhnacademy.shoppingmall.product.repository.impl.ProductCategoryRepositoryImpl;
 import com.nhnacademy.shoppingmall.product.repository.impl.ProductRepositoryImpl;
@@ -14,8 +14,8 @@ import com.nhnacademy.shoppingmall.product.service.ProductService;
 import com.nhnacademy.shoppingmall.product.service.impl.CategoryServiceImpl;
 import com.nhnacademy.shoppingmall.product.service.impl.ProductCategoryServiceImpl;
 import com.nhnacademy.shoppingmall.product.service.impl.ProductServiceImpl;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -27,30 +27,30 @@ public class ProductController implements BaseController {
     private final ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
     private final CategoryService categoryService = new CategoryServiceImpl(new CategoryRepositoryImpl());
     private final ProductCategoryService productCategoryService =
-            new ProductCategoryServiceImpl(new ProductCategoryRepositoryImpl());
+            new ProductCategoryServiceImpl(new ProductCategoryRepositoryImpl(), new ProductRepositoryImpl(),
+                    new CategoryRepositoryImpl());
+    private final int PAGE_SIZE = 10;
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        List<Product> list = productService.getProducts();
-        List<Category> categories = categoryService.getCategories();
+        int page = (Objects.isNull(req.getParameter("page")) ? 1 : Integer.parseInt(req.getParameter("page")));
+        Page<Product> productList = productService.getProductsOnPage(page, PAGE_SIZE);
+        int total = productService.getTotalCount();
 
-        List<List<String>> myCategoryName = new ArrayList<>();
 
-        for (Product product : list) {
-            List<ProductCategory> categoryList =
-                    productCategoryService.getProductCategoryByProductId(product.getProductId());
-            List<String> temp = new ArrayList<>();
-            for (ProductCategory productCategory : categoryList) {
-                int categoryId = productCategory.getCategoryId();
-                String categoryName = categoryService.getCategory(categoryId).getCategoryName();
-                temp.add(categoryName);
-            }
-            myCategoryName.add(temp);
-        }
+        total = (total == 0) ? 1 : total;
+        total = (total % PAGE_SIZE == 0) ? total / PAGE_SIZE : (total / PAGE_SIZE) + 1;
 
-        req.setAttribute("myCategory", myCategoryName);
-        req.setAttribute("category", categories);
-        req.setAttribute("products", list);
+        int currentBlock = page / PAGE_SIZE + 1;
+        int startPage = (currentBlock - 1) * PAGE_SIZE + 1;
+        int endPage = total < PAGE_SIZE ? total : startPage + PAGE_SIZE - 1;
+
+        List<List<Category>> productCategory = productCategoryService.getCategoryOnProduct(page, PAGE_SIZE);
+        req.setAttribute("productCategory", productCategory);
+        req.setAttribute("productList", productList);
+        req.setAttribute("startPage", startPage);
+        req.setAttribute("endPage", endPage);
+        req.setAttribute("page", page);
 
         return "shop/mypage/admin/product";
     }

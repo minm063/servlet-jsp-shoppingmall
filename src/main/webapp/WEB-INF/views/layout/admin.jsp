@@ -18,66 +18,66 @@
 
 </head>
 <body>
-<jsp:include page="${layout_content_holder}"/>
+<%--<jsp:include page="${layout_content_holder}"/>--%>
 
-<%--<div class="mainContainer">--%>
-<%--    <header class="p-3 bg-dark text-white">--%>
-<%--        <div class="container">--%>
-<%--            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">--%>
+<div class="mainContainer">
+    <header class="p-3 bg-dark text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
 
-<%--                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">--%>
-<%--                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">--%>
-<%--                        <use xlink:href="#bootstrap"></use>--%>
-<%--                    </svg>--%>
-<%--                </a>--%>
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                        <use xlink:href="#bootstrap"></use>
+                    </svg>
+                </a>
 
-<%--                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">--%>
-<%--                    <li><a href="/index.do" class="nav-link px-2 text-secondary">Home</a></li>--%>
-<%--                    <li><a href="/mypage/${sessionScope.compactRole}.do" class="nav-link px-2 text-white">관리 페이지</a></li>--%>
-<%--                </ul>--%>
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="/index.do" class="nav-link px-2 text-secondary">Home</a></li>
+                    <li><a href="/mypage/${sessionScope.compactRole}.do" class="nav-link px-2 text-white">관리 페이지</a></li>
+                </ul>
 
-<%--                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">--%>
-<%--                    <input type="search" class="form-control form-control-dark" placeholder="Search..."--%>
-<%--                           aria-label="Search">--%>
-<%--                </form>--%>
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                    <input type="search" class="form-control form-control-dark" placeholder="Search..."
+                           aria-label="Search">
+                </form>
 
-<%--                <div class="text-end">--%>
-<%--                    <c:choose>--%>
-<%--                        <c:when test="${empty sessionScope.userName}">--%>
-<%--                            <a class="btn btn-outline-light me-2" href="/login.do">로그인</a>--%>
-<%--                            <a class="btn btn-warning" href="signup.do">회원가입</a>--%>
-<%--                        </c:when>--%>
-<%--                        <c:otherwise>--%>
-<%--                            <a href="/mypage/${sessionScope.compactRole}.do" class="btn btn-outline-light me-2">${sessionScope.userName}</a>--%>
-<%--                            <form method="post" action="/logout.do" class="btn btn-warning">--%>
-<%--                                <button type="submit" class="btn btn-warning" href="/logout.do">로그아웃</button>--%>
-<%--                            </form>--%>
-<%--                        </c:otherwise>--%>
-<%--                    </c:choose>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </header>--%>
+                <div class="text-end">
+                    <c:choose>
+                        <c:when test="${empty sessionScope.userName}">
+                            <a class="btn btn-outline-light me-2" href="/login.do">로그인</a>
+                            <a class="btn btn-warning" href="signup.do">회원가입</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="/mypage/${sessionScope.compactRole}.do" class="btn btn-outline-light me-2">${sessionScope.userName}</a>
+                            <form method="post" action="/logout.do" class="btn btn-warning">
+                                <button type="submit" class="btn btn-warning" href="/logout.do">로그아웃</button>
+                            </form>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
+        </div>
+    </header>
 
-<%--    <main>--%>
-<%--        <div class="album py-5 bg-light">--%>
-<%--            <div class="container">--%>
-<%--                <jsp:include page="${layout_content_holder}"/>--%>
-<%--            </div>--%>
-<%--        </div>--%>
+    <main>
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <jsp:include page="${layout_content_holder}"/>
+            </div>
+        </div>
 
-<%--    </main>--%>
+    </main>
 
-<%--    <footer class="text-muted py-5">--%>
-<%--        <div class="container">--%>
-<%--            <p class="float-end mb-1">--%>
-<%--                <a href="#">Back to top</a>--%>
-<%--            </p>--%>
-<%--            <p class="mb-1">shoppingmall example is © nhnacademy.com</p>--%>
-<%--        </div>--%>
-<%--    </footer>--%>
+    <footer class="text-muted py-5">
+        <div class="container">
+            <p class="float-end mb-1">
+                <a href="#">Back to top</a>
+            </p>
+            <p class="mb-1">shoppingmall example is © nhnacademy.com</p>
+        </div>
+    </footer>
 
-<%--</div>--%>
+</div>
 
 </body>
 </html>

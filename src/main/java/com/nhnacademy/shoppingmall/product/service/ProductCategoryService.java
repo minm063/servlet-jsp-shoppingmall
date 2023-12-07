@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.product.service;
 
+import com.nhnacademy.shoppingmall.product.domain.Category;
 import com.nhnacademy.shoppingmall.product.domain.ProductCategory;
 import java.util.List;
 
@@ -18,4 +19,8 @@ public interface ProductCategoryService {
 
     void deleteProductCategory(ProductCategory productCategory);
     void deleteProductCategoryByProductId(int productId);
+
+    List<List<Category>> getCategoryOnProduct(int page, int pageSize);
+
+    List<Integer> getCategoryByProductId(int productId);
 }

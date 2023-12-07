@@ -237,7 +237,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int countAll() {
+    public int totalCount() {
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql = "select count(*) from users";
 
@@ -253,7 +253,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int countAll(User.Auth auth) {
+    public int totalCount(User.Auth auth) {
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql = "select count(*) from users where user_auth =?";
 
@@ -304,7 +304,7 @@ public class UserRepositoryImpl implements UserRepository {
 
             long total = 0;
             if (!userList.isEmpty()) {
-                total = countAll(auth);
+                total = this.totalCount(auth);
             }
             return new Page<User>(userList, total);
         } catch (SQLException e) {

@@ -25,9 +25,9 @@ public interface UserRepository {
 
     List<User> findUsers(User.Auth auth);
 
-    int countAll();
+    int totalCount();
 
-    int countAll(User.Auth auth);
+    int totalCount(User.Auth auth);
 
     Page<User> findUserByPage(User.Auth auth, int page, int pageSize);
 }

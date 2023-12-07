@@ -10,6 +10,7 @@ import java.util.Objects;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import javax.servlet.http.Cookie;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

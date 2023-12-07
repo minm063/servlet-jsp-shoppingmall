@@ -6,6 +6,7 @@ import com.nhnacademy.shoppingmall.product.domain.Category;
 import com.nhnacademy.shoppingmall.product.repository.impl.CategoryRepositoryImpl;
 import com.nhnacademy.shoppingmall.product.service.CategoryService;
 import com.nhnacademy.shoppingmall.product.service.impl.CategoryServiceImpl;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,8 +19,10 @@ public class CategoryUpdateController implements BaseController {
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         Category category =
                 new Category(Integer.parseInt(req.getParameter("categoryId")), req.getParameter("categoryName"));
-        service.updateCategory(category);
+        if (Objects.nonNull(category.getCategoryName())) {
+            service.updateCategory(category);
+        }
 
-        return "redirect:/mypage/admin.do";
+        return "redirect:/mypage/admin/category.do";
     }
 }

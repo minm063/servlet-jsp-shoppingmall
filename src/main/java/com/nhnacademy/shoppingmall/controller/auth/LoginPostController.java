@@ -44,10 +44,9 @@ public class LoginPostController implements BaseController {
             session.setAttribute("role", role);
             session.setAttribute("compactRole", compactRole);
 
-            log.info("session: {},{},{},{}", id, user.getUserName(), role, compactRole);
 
-            return "shop/main/index";
-//            return "redirect:/index.do";
+//            return "shop/main/index";
+            return "redirect:/index.do";
         } catch (UserNotFoundException e) {
             return "redirect:/login.do";
         }

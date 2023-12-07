@@ -8,7 +8,7 @@
     <table class="table table-striped table-sm">
         <thead>
         <tr>
-            <th>id</th>
+            <th>no</th>
             <th colspan="3">category</th>
             <th>number</th>
             <th>name</th>
@@ -22,14 +22,14 @@
         <tbody>
 
 
-        <c:forEach var="product" items="${requestScope.products}" varStatus="status">
+        <c:forEach var="product" items="${requestScope.productList.getContent()}" varStatus="status">
             <tr>
                 <td>
-                    <a href="/mypage/admin/product/detail.do?id=${product.productId}">${product.productId}</a>
+                    <a href="/mypage/admin/product/detail.do?id=${product.productId}">${status.index+1+(requestScope.page-1)*10}</a>
                 </td>
                 <td colspan="3">
-                    <c:forEach var="category" items="${requestScope.myCategory[status.index]}" varStatus="status2">
-                        ${category}
+                    <c:forEach var="category" items="${requestScope.productCategory.get(status.index)}" varStatus="status2">
+                        ${category.getCategoryName()}
                         <c:if test="${not status2.last}">, </c:if>
                     </c:forEach>
                 </td>
@@ -52,3 +52,14 @@
 <button class="btn btn-primary" onclick="location.href='/mypage/admin/product/detail.do'">
     상품 추가하기
 </button>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <c:forEach var="index" begin="${requestScope.startPage}" end="${requestScope.endPage}" step="1">
+            <li class="page-item">
+                <a class="page-link" href="/mypage/admin/product.do?page=${index}">
+                        ${index}
+                </a>
+            </li>
+        </c:forEach>
+    </ul>
+</nav>

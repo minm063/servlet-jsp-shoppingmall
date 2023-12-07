@@ -1,8 +1,10 @@
 package com.nhnacademy.shoppingmall.product.repository.impl;
 
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
+import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.product.domain.Product;
 import com.nhnacademy.shoppingmall.product.repository.ProductRepository;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -156,7 +158,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public int countAll() {
+    public int totalCount() {
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql = "select count(*) from product";
 
@@ -233,5 +235,81 @@ public class ProductRepositoryImpl implements ProductRepository {
         }
         return 0;
     }
+
+    @Override
+    public Page<Product> findProductsOnPage(int page, int pageSize) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "select * from product order by product_id limit ?, ?";
+        int offset = (page - 1) * pageSize;
+        int limit = pageSize;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, offset);
+            preparedStatement.setInt(2, limit);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Product> productList = new ArrayList<>(pageSize);
+
+            while (resultSet.next()) {
+                Product product = new Product(
+                        resultSet.getInt("product_id"),
+                        resultSet.getString("product_number"),
+                        resultSet.getString("product_name"),
+                        new BigDecimal(resultSet.getString("unit_cost")),
+                        resultSet.getString("description"),
+                        resultSet.getString("product_image"),
+                        resultSet.getString("thumbnail")
+                );
+
+                productList.add(product);
+            }
+
+            long total = 0;
+            if (!productList.isEmpty()) {
+                total = this.totalCount();
+            }
+            return new Page<>(productList, total);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Page<Product> findProductsOnPageByCategory(int page, int pageSize, int categoryId) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "select * from product order by product_id desc limit ?, ?";
+        int offset = (page - 1) * pageSize;
+        int limit = pageSize;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, offset);
+            preparedStatement.setInt(2, limit);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Product> productList = new ArrayList<>(pageSize);
+
+            while (resultSet.next()) {
+                Product product = new Product(
+                        resultSet.getInt("product_id"),
+                        resultSet.getString("product_number"),
+                        resultSet.getString("product_name"),
+                        new BigDecimal(resultSet.getString("unit_cost")),
+                        resultSet.getString("description"),
+                        resultSet.getString("product_image"),
+                        resultSet.getString("thumbnail")
+                );
+
+                productList.add(product);
+            }
+
+            long total = 0;
+            if (!productList.isEmpty()) {
+                total = this.totalCount();
+            }
+            return new Page<>(productList, total);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }    }
+
 
 }

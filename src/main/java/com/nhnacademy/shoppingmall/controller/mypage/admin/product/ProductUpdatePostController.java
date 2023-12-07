@@ -5,6 +5,7 @@ import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.product.domain.Product;
 import com.nhnacademy.shoppingmall.product.domain.ProductCategory;
+import com.nhnacademy.shoppingmall.product.repository.impl.CategoryRepositoryImpl;
 import com.nhnacademy.shoppingmall.product.repository.impl.ProductCategoryRepositoryImpl;
 import com.nhnacademy.shoppingmall.product.repository.impl.ProductRepositoryImpl;
 import com.nhnacademy.shoppingmall.product.service.ProductCategoryService;
@@ -32,13 +33,11 @@ public class ProductUpdatePostController implements BaseController {
 
     private final ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
     private final ProductCategoryService productCategoryService =
-            new ProductCategoryServiceImpl(new ProductCategoryRepositoryImpl());
+            new ProductCategoryServiceImpl(new ProductCategoryRepositoryImpl(), new ProductRepositoryImpl(),
+                    new CategoryRepositoryImpl());
     private final String DEFAULT_PATH =
             "/Users/mj/nhn-cia/java-servlet-jsp-shoppingmall/src/main/webapp/resources/";
 
-
-//     product_detail의 input="file"의 value를 설정하지 못하기 때문에 update controller에서
-//     파일명을 갖고 오지 못한다. 이 경우 null로 업데이트 돼 저장되어 있던 파일명이 날라간다.
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -55,8 +54,9 @@ public class ProductUpdatePostController implements BaseController {
                             fileName = "no-image.png";
                         }
                         if (!item.getName().isEmpty() && item.getName() != null) {
-                            fileName = new File(LocalDateTime.now() + "_" + item.getName()).getName();
-                            log.info("fileNAme: {} ", fileName);
+                            String name = item.getName();
+
+                            fileName = new File(LocalDateTime.now() + "_" + item.getName().replace("/resources/", "")).getName();
                             if (!new File(DEFAULT_PATH + fileName).exists()) {
                                 item.write(new File(DEFAULT_PATH + fileName));
                             }
@@ -73,13 +73,26 @@ public class ProductUpdatePostController implements BaseController {
             } catch (Exception e) {
                 log.error(e.getMessage());
             }
+            log.info("@@@ product image : {}", map.get("previousProductImage"));
+            log.info("@@@ product image : {}", map.get("previousThumbnail")); // resources 잘라야 돼
+            log.info("@@@ product thumbnail : {}", map.get("productImage"));
+            log.info("@@@ product thumbnail : {}", map.get("thumbnail"));
         }
         if (Objects.nonNull(map.get("productName")) && Objects.nonNull(map.get("unitCost"))) {
             BigDecimal unitCost = new BigDecimal(map.get("unitCost"));
+            String productImage =
+                    "delete".equals(map.get("deletePreviousProductImage")) ? map.get("productImage") :
+                            map.get("previousProductImage").replace("/resources/", "");
+            String thumbnail =
+                    "delete".equals(map.get("deletePreviousThumbnail")) ? map.get("thumbnail") :
+                            map.get("previousThumbnail").replace("/resources/", "");
+
+
             Product product =
                     new Product(Integer.parseInt(map.get("productId")), map.get("productNumber"),
                             map.get("productName"), unitCost, map.get("description"),
-                            map.get("productImage"), map.get("thumbnail"));
+                            productImage, thumbnail);
+            // validation
             productService.updateProduct(product);
         }
 
@@ -125,6 +138,6 @@ public class ProductUpdatePostController implements BaseController {
             ProductCategory productCategory = new ProductCategory(productId, categoryId);
             productCategoryService.saveProductCategory(productCategory);
         }
-        return "redirect:/mypage/admin.do";
+        return "redirect:/mypage/admin/product.do";
     }
 }

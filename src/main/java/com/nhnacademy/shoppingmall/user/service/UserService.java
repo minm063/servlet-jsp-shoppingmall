@@ -20,7 +20,7 @@ public interface UserService {
 
     List<User> getUsers(User.Auth auth);
 
-    int totalCount();
+    int getTotalCount();
 
     Page<User> getUserByPage(User.Auth auth, int page, int pageSize);
 }

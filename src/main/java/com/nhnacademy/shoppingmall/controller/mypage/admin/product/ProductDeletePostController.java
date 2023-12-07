@@ -17,6 +17,6 @@ public class ProductDeletePostController implements BaseController {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         service.deleteProduct(Integer.parseInt(req.getParameter("id")));
-        return "redirect:/mypage/admin.do";
+        return "redirect:/mypage/admin/product.do";
     }
 }

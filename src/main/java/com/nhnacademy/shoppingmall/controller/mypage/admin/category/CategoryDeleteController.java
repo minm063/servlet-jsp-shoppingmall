@@ -17,6 +17,6 @@ public class CategoryDeleteController implements BaseController {
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         service.deleteCategory(Integer.parseInt(req.getParameter("id")));
 
-        return "redirect:/mypage/admin.do";
+        return "redirect:/mypage/admin/category.do";
     }
 }

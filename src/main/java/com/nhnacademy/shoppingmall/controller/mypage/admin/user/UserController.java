@@ -35,6 +35,7 @@ public class UserController implements BaseController {
         req.setAttribute("endPage", endPage);
         req.setAttribute("totalPage", total);
         req.setAttribute("auth", req.getParameter("id"));
+        req.setAttribute("page", page);
         return "shop/mypage/admin/user";
     }
 }

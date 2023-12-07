@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.product.repository;
 
+import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.product.domain.Category;
 import java.util.List;
 import java.util.Optional;
@@ -19,5 +20,9 @@ public interface CategoryRepository {
 
     List<Category> findCategories();
 
-    int countAll();
+    int totalCount();
+
+    List<Category> findCategoryByProductId(int productId);
+
+    Page<Category> findCategoryOnPage(int page, int pageSize);
 }
