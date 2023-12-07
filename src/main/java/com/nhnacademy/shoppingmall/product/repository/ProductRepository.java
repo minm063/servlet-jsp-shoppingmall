@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface ProductRepository {
     Optional<Product> findByProductName(String productName);
+
     Optional<Product> findByProductNumber(String productNumber);
 
     int saveProduct(Product product);
@@ -16,7 +17,11 @@ public interface ProductRepository {
     int deleteProduct(int productId);
 
     int countProductById(int productId);
+
     int totalCount();
+
+    int totalCountByCategoryId(int categoryId);
+
     List<Product> findProducts();
 
     Optional<Product> findByProductId(int productId);
@@ -24,5 +29,6 @@ public interface ProductRepository {
     int findIndex();
 
     Page<Product> findProductsOnPage(int page, int pageSize);
+
     Page<Product> findProductsOnPageByCategory(int page, int pageSize, int categoryId);
 }

@@ -47,7 +47,7 @@
                             <a class="btn btn-warning" href="signup.do">회원가입</a>
                         </c:when>
                         <c:otherwise>
-                            <a href="/mypage/${sessionScope.compactRole}.do" class="btn btn-outline-light me-2">${sessionScope.userName}</a>
+                            <a href="/mypage/${sessionScope.compactRole}.do" class="btn btn-outline-light me-2">장바구니</a>
                             <form method="post" action="/logout.do" class="btn btn-warning">
                                 <button type="submit" class="btn btn-warning" href="/logout.do">로그아웃</button>
                             </form>

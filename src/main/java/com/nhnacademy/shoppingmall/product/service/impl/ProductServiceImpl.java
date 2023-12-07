@@ -100,6 +100,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public int getTotalCountByCategoryId(int categoryId) {
+        return productRepository.totalCountByCategoryId(categoryId);
+    }
+
+    @Override
     public Page<Product> getProductsOnPage(int page, int pageSize) {
         return productRepository.findProductsOnPage(page, pageSize);
     }
@@ -120,5 +125,19 @@ public class ProductServiceImpl implements ProductService {
         return productsOnPage;
     }
 
+    @Override
+    public Page<Product> getProductsOnPageByCategoryId(int page, int pageSize, String path, int categoryId) {
+        if (productRepository.totalCountByCategoryId(categoryId) == 0) {
+            return new Page<>(new ArrayList<>(), 0);
+        }
+        Page<Product> productsOnPage = productRepository.findProductsOnPageByCategory(page, pageSize, categoryId);
 
+        for (Product product : productsOnPage.getContent()) {
+            product.setProductImage(path + product.getProductImage());
+            product.setThumbnail(path + product.getThumbnail());
+        }
+
+        return productsOnPage;
+
+    }
 }

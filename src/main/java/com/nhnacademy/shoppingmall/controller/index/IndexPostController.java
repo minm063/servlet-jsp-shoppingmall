@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.controller.index;
 
+
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.page.Page;
@@ -11,24 +12,20 @@ import com.nhnacademy.shoppingmall.product.service.CategoryService;
 import com.nhnacademy.shoppingmall.product.service.ProductService;
 import com.nhnacademy.shoppingmall.product.service.impl.CategoryServiceImpl;
 import com.nhnacademy.shoppingmall.product.service.impl.ProductServiceImpl;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequestMapping(method = RequestMapping.Method.GET, value = {"/index.do"})
-public class IndexController implements BaseController {
-
-    /**
-     * 1. 전체 상품(카테고리 없음) -> select * from product (order by ?)
-     * 2. 최근 본 상품 -> Cookie에 json?
-     * 3. 카테고리별 -> select * from product join productCategory, category where categoryName=?
-     */
+@RequestMapping(method = RequestMapping.Method.POST, value = "/index.do")
+public class IndexPostController implements BaseController {
 
     private final ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
     private final CategoryService categoryService = new CategoryServiceImpl(new CategoryRepositoryImpl());
@@ -36,11 +33,10 @@ public class IndexController implements BaseController {
     private final int PAGE_SIZE = 20;
 
 
-    public IndexController() {
-    }
-
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) {
+    public String execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        log.info(req.getParameter("category"));
+
         Cookie[] cookies = req.getCookies();
 
         if (cookies != null) {
@@ -58,11 +54,14 @@ public class IndexController implements BaseController {
         }
 
         int page = (Objects.isNull(req.getParameter("page")) ? 1 : Integer.parseInt(req.getParameter("page")));
+        int categoryId = Integer.parseInt(req.getParameter("category"));
 
         List<Category> categoryList = categoryService.getCategories();
-        Page<Product> products = productService.getProductsOnPageByPath(Math.toIntExact(page), PAGE_SIZE, VIEW_PATH);
+        Page<Product> products =
+                categoryId == 0 ? productService.getProductsOnPageByPath(Math.toIntExact(page), PAGE_SIZE, VIEW_PATH) :
+                        productService.getProductsOnPageByCategoryId(Math.toIntExact(page), PAGE_SIZE, VIEW_PATH, categoryId);
 
-        int total = productService.getTotalCount();
+        int total = productService.getTotalCountByCategoryId(categoryId);
         total = (total == 0) ? 1 : total;
         total = (total % PAGE_SIZE == 0) ? total / PAGE_SIZE : (total / PAGE_SIZE) + 1;
 
@@ -74,6 +73,7 @@ public class IndexController implements BaseController {
         req.setAttribute("category", categoryList);
         req.setAttribute("startPage", startPage);
         req.setAttribute("endPage", endPage);
+        req.setAttribute("defaultCategoryId", categoryId);
 
         return "shop/main/index";
     }

@@ -175,6 +175,28 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
+    public int totalCountByCategoryId(int categoryId) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "select count(*)\n" +
+                "from product\n" +
+                "         join product_category pc on product.product_id = pc.product_id\n" +
+                "         join category c on pc.category_id = c.category_id\n" +
+                "where c.category_id=?\n";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, categoryId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count;
+            }
+        } catch (SQLException e) {
+        }
+        return 0;
+    }
+
+    @Override
     public int countProductById(int productId) {
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql = "select count(*) from product where product_id=?";
@@ -277,13 +299,19 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Page<Product> findProductsOnPageByCategory(int page, int pageSize, int categoryId) {
         Connection connection = DbConnectionThreadLocal.getConnection();
-        String sql = "select * from product order by product_id desc limit ?, ?";
+        String sql = "select product.*\n" +
+                "from product\n" +
+                "         join product_category pc on product.product_id = pc.product_id\n" +
+                "         join category c on pc.category_id = c.category_id\n" +
+                "where c.category_id=? order by product_id limit ?, ?\n";
+
         int offset = (page - 1) * pageSize;
         int limit = pageSize;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, offset);
-            preparedStatement.setInt(2, limit);
+            preparedStatement.setInt(1, categoryId);
+            preparedStatement.setInt(2, offset);
+            preparedStatement.setInt(3, limit);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Product> productList = new ArrayList<>(pageSize);

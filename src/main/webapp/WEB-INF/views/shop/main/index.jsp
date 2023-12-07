@@ -12,13 +12,13 @@
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h2>최근 본 상품</h2>
             <div class="btn-toolbar mb-2 mb-md-0">
-                <form action="" method="post">
+                <form action="/index.do" method="post">
                     <label for="category"></label>
                     <select name="category" id="category">
                         <option value="0">카테고리 선택</option>
                         <c:forEach var="category" items="${requestScope.category}">
                             <option value="${category.categoryId}"
-                                <%--                            <c:if test="${category.categoryId eq defaultCategoryId}">selected</c:if>--%>>
+                                    <c:if test="${category.categoryId eq defaultCategoryId}">selected</c:if>>
                                     ${category.categoryName}
                             </option>
                         </c:forEach>
@@ -32,7 +32,7 @@
 
 <div>
     <section>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" >
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             <!-- 최근 본 상품 -->
             <c:forEach var="product" items="${requestScope.latestProduct}" varStatus="status1">
                 <div class="col" style="width: 20%;">
@@ -41,7 +41,7 @@
                              xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
                              preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
                             <text x="50%" y="50%" fill="#eceeef" dy=".3em">Image Not Found</text>
-                            <image href="${product.thumbnail}" width="100%" height="100%"></image>
+                            <image href="/resources/${product.thumbnail}" width="100%" height="100%"></image>
                         </svg>
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">

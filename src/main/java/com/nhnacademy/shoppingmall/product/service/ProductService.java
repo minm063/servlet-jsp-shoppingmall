@@ -23,8 +23,13 @@ public interface ProductService {
 
     int getTotalCount();
 
+    int getTotalCountByCategoryId(int categoryId);
+
     Page<Product> getProductsOnPage(int page, int pageSize);
 
 
     Page<Product> getProductsOnPageByPath(int page, int pageSize, String path);
+
+    Page<Product> getProductsOnPageByCategoryId(int page, int pageSize, String path, int categoryId);
+
 }
