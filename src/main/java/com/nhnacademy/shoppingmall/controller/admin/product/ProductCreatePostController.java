@@ -36,7 +36,8 @@ public class ProductCreatePostController implements BaseController {
 
     private final ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
     private final ProductCategoryService productCategoryService =
-            new ProductCategoryServiceImpl(new ProductCategoryRepositoryImpl(), new ProductRepositoryImpl(), new CategoryRepositoryImpl());
+            new ProductCategoryServiceImpl(new ProductCategoryRepositoryImpl(), new ProductRepositoryImpl(),
+                    new CategoryRepositoryImpl());
     private final String DEFAULT_PATH =
             "/Users/mj/nhn-cia/java-servlet-jsp-shoppingmall/src/main/webapp/resources/";
 
@@ -54,7 +55,7 @@ public class ProductCreatePostController implements BaseController {
                     if (!item.isFormField()) {
                         // 파일 처리 로직
                         String fileName = null;
-                        if (item.getFieldName().equals("thumbnail")) {
+                        if (item.getFieldName().equals("thumbnail") || item.getFieldName().equals("productImage")) {
                             fileName = "no-image.png";
                         }
                         if (!item.getName().isEmpty() && item.getName() != null) {
@@ -88,7 +89,8 @@ public class ProductCreatePostController implements BaseController {
                 return "redirect:/admin/product/detail.do";
             }
             BigDecimal unitCost = new BigDecimal(map.get("unitCost"));
-            Product product = new Product(productNumber, map.get("productName"), unitCost, map.get("description"),
+            Product product = new Product(productNumber, map.get("productName"), unitCost, Integer.parseInt(map.get("stock")),
+                    map.get("description"),
                     map.get("productImage"), map.get("thumbnail"));
             productService.saveProduct(product);
 

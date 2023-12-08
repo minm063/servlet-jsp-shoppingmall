@@ -46,6 +46,10 @@
                 <td><input type="text" value="${product.unitCost}" name="unitCost" required></td>
             </tr>
             <tr>
+                <th scope="row">재고</th>
+                <td><input type="text" value="${product.stock}" name="stock"></td>
+            </tr>
+            <tr>
                 <th scope="row">description</th>
                 <td><input type="text" value="${product.description}" name="description"></td>
             </tr>

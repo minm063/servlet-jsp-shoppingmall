@@ -3,6 +3,7 @@ package com.nhnacademy.shoppingmall.product.service;
 import com.nhnacademy.shoppingmall.cart.domain.Cart;
 import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.product.domain.Product;
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
@@ -15,6 +16,9 @@ public interface ProductService {
     void saveProduct(Product product);
 
     void updateProduct(Product product);
+
+    void updateProduct(int productId, String productName, BigDecimal unitCost, int stock, String description,
+                       String productImage, String thumbnail);
 
     void deleteProduct(int productId);
 

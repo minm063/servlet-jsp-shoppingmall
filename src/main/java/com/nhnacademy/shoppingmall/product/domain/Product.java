@@ -7,35 +7,31 @@ public class Product {
     private String productNumber;
     private String productName;
     private BigDecimal unitCost;
+
+    private int stock;
     private String description;
     private String productImage;
     private String thumbnail;
 
-    public Product(String productNumber, String productName, BigDecimal unitCost, String description,
-                   String productImage,
-                   String thumbnail) {
-        this.productNumber = productNumber;
-        this.productName = productName;
-        this.unitCost = unitCost;
-        this.description = description;
-        this.productImage = productImage;
-        this.thumbnail = thumbnail;
-    }
-
-    public Product(int productId, String productNumber, String productName, BigDecimal unitCost, String description,
-                   String productImage, String thumbnail) {
+    public Product(int productId, String productNumber, String productName, BigDecimal unitCost, int stock,
+                   String description, String productImage, String thumbnail) {
         this.productId = productId;
         this.productNumber = productNumber;
         this.productName = productName;
         this.unitCost = unitCost;
+        this.stock = stock;
         this.description = description;
         this.productImage = productImage;
         this.thumbnail = thumbnail;
     }
 
-    public Product(String productName, BigDecimal unitCost, String description, String productImage, String thumbnail) {
+
+    public Product(String productNumber, String productName, BigDecimal unitCost, int stock, String description,
+                   String productImage, String thumbnail) {
+        this.productNumber = productNumber;
         this.productName = productName;
         this.unitCost = unitCost;
+        this.stock = stock;
         this.description = description;
         this.productImage = productImage;
         this.thumbnail = thumbnail;
@@ -67,6 +63,10 @@ public class Product {
 
     public String getThumbnail() {
         return thumbnail;
+    }
+
+    public int getStock() {
+        return stock;
     }
 
     public void setProductImage(String productImage) {

@@ -50,13 +50,14 @@ public class ProductUpdatePostController implements BaseController {
                     if (!item.isFormField()) {
                         // 파일 처리 로직
                         String fileName = null;
-                        if (item.getFieldName().equals("thumbnail")) {
+                        if (item.getFieldName().equals("thumbnail") || item.getFieldName().equals("productImage")) {
                             fileName = "no-image.png";
                         }
                         if (!item.getName().isEmpty() && item.getName() != null) {
                             String name = item.getName();
 
-                            fileName = new File(LocalDateTime.now() + "_" + item.getName().replace("/resources/", "")).getName();
+                            fileName = new File(
+                                    LocalDateTime.now() + "_" + item.getName().replace("/resources/", "")).getName();
                             if (!new File(DEFAULT_PATH + fileName).exists()) {
                                 item.write(new File(DEFAULT_PATH + fileName));
                             }
@@ -85,12 +86,9 @@ public class ProductUpdatePostController implements BaseController {
                             map.get("previousThumbnail").replace("/resources/", "");
 
 
-            Product product =
-                    new Product(Integer.parseInt(map.get("productId")), map.get("productNumber"),
-                            map.get("productName"), unitCost, map.get("description"),
-                            productImage, thumbnail);
             // validation
-            productService.updateProduct(product);
+            productService.updateProduct(Integer.parseInt(map.get("productId")), map.get("productName"), unitCost, Integer.parseInt(map.get("stock")), map.get("description"),
+                    productImage, thumbnail);
         }
 
         TreeSet<Integer> treeSet = new TreeSet<>();

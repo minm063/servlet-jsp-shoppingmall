@@ -2,13 +2,12 @@ package com.nhnacademy.shoppingmall.product.service.impl;
 
 import com.nhnacademy.shoppingmall.cart.domain.Cart;
 import com.nhnacademy.shoppingmall.common.page.Page;
-import com.nhnacademy.shoppingmall.product.domain.Category;
 import com.nhnacademy.shoppingmall.product.domain.Product;
 import com.nhnacademy.shoppingmall.product.exception.ProductAlreadyExistsException;
 import com.nhnacademy.shoppingmall.product.exception.ProductNotFoundException;
-import com.nhnacademy.shoppingmall.product.repository.CategoryRepository;
 import com.nhnacademy.shoppingmall.product.repository.ProductRepository;
 import com.nhnacademy.shoppingmall.product.service.ProductService;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +46,16 @@ public class ProductServiceImpl implements ProductService {
             throw new ProductNotFoundException(product.getProductName());
         }
         productRepository.updateProduct(product);
+    }
+
+    @Override
+    public void updateProduct(int productId, String productName, BigDecimal unitCost, int stock, String description,
+                              String productImage, String thumbnail) {
+
+        if (productRepository.countProductById(productId) == 0) {
+            throw new ProductNotFoundException(productName);
+        }
+        productRepository.updateProduct(productId, productName, unitCost, stock, description, productImage, thumbnail);
     }
 
     @Override

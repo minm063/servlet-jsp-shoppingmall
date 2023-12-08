@@ -13,6 +13,7 @@
             <th>number</th>
             <th>name</th>
             <th>unit cost</th>
+            <th>stock</th>
             <th>description</th>
             <th>image</th>
             <th>thumbnail</th>
@@ -36,6 +37,7 @@
                 <td>${product.productNumber}</td>
                 <td>${product.productName}</td>
                 <td>${product.unitCost}</td>
+                <td>${product.stock}</td>
                 <td>${product.description}</td>
                 <td>${product.productImage}</td>
                 <td>${product.thumbnail}</td>

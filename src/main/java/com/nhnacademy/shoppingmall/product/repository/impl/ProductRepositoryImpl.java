@@ -18,7 +18,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Optional<Product> findByProductName(String productName) {
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql =
-                "select product_id, product_number, product_name, unit_cost, description, product_image, thumbnail from product where product_name=?";
+                "select product_id, product_number, product_name, unit_cost, stock, description, product_image, thumbnail from product where product_name=?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, productName);
@@ -30,6 +30,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                         resultSet.getString("product_number"),
                         resultSet.getString("product_name"),
                         resultSet.getBigDecimal("unit_cost"),
+                        resultSet.getInt("stock"),
                         resultSet.getString("description"),
                         resultSet.getString("product_image"),
                         resultSet.getString("thumbnail")
@@ -47,7 +48,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Optional<Product> findByProductNumber(String productNumber) {
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql =
-                "select product_id, product_number, product_name, unit_cost, description, product_image, thumbnail from product where product_number=?";
+                "select product_id, product_number, product_name, unit_cost, stock, description, product_image, thumbnail from product where product_number=?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, productNumber);
@@ -59,6 +60,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                         resultSet.getString("product_number"),
                         resultSet.getString("product_name"),
                         resultSet.getBigDecimal("unit_cost"),
+                        resultSet.getInt("stock"),
                         resultSet.getString("description"),
                         resultSet.getString("product_image"),
                         resultSet.getString("thumbnail")
@@ -76,15 +78,16 @@ public class ProductRepositoryImpl implements ProductRepository {
     public int saveProduct(Product product) {
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql =
-                "insert into product (product_number, product_name, unit_cost, description, product_image, thumbnail) values (?,?,?,?,?,?)";
+                "insert into product (product_number, product_name, unit_cost, stock, description, product_image, thumbnail) values (?,?,?,?,?,?,?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, product.getProductNumber());
             preparedStatement.setString(2, product.getProductName());
             preparedStatement.setBigDecimal(3, product.getUnitCost());
-            preparedStatement.setString(4, product.getDescription());
-            preparedStatement.setString(5, product.getProductImage());
-            preparedStatement.setString(6, product.getThumbnail());
+            preparedStatement.setInt(4, product.getStock());
+            preparedStatement.setString(5, product.getDescription());
+            preparedStatement.setString(6, product.getProductImage());
+            preparedStatement.setString(7, product.getThumbnail());
 
             int result = preparedStatement.executeUpdate();
             return result;
@@ -110,6 +113,30 @@ public class ProductRepositoryImpl implements ProductRepository {
 
             int result = preparedStatement.executeUpdate();
             return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int updateProduct(int productId, String productName, BigDecimal unitCost, int stock, String description,
+                             String productImage, String thumbnail) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql =
+                "update product set product_name=?, unit_cost=?, stock=?, description=?, product_image=?, thumbnail=? where product_id=?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, productName);
+            preparedStatement.setBigDecimal(2, unitCost);
+            preparedStatement.setInt(3, stock);
+            preparedStatement.setString(4, description);
+            preparedStatement.setString(5, productImage);
+            preparedStatement.setString(6, thumbnail);
+            preparedStatement.setInt(7, productId);
+
+            int result = preparedStatement.executeUpdate();
+            return result;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -145,6 +172,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                         resultSet.getString("product_number"),
                         resultSet.getString("product_name"),
                         resultSet.getBigDecimal("unit_cost"),
+                        resultSet.getInt("stock"),
                         resultSet.getString("description"),
                         resultSet.getString("product_image"),
                         resultSet.getString("thumbnail")
@@ -218,7 +246,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Optional<Product> findByProductId(int productId) {
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql =
-                "select product_id, product_number, product_name, unit_cost, description, product_image, thumbnail from product where product_id=?";
+                "select product_id, product_number, product_name, unit_cost, stock, description, product_image, thumbnail from product where product_id=?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, productId);
@@ -230,6 +258,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                         resultSet.getString("product_number"),
                         resultSet.getString("product_name"),
                         resultSet.getBigDecimal("unit_cost"),
+                        resultSet.getInt("stock"),
                         resultSet.getString("description"),
                         resultSet.getString("product_image"),
                         resultSet.getString("thumbnail")
@@ -278,6 +307,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                         resultSet.getString("product_number"),
                         resultSet.getString("product_name"),
                         new BigDecimal(resultSet.getString("unit_cost")),
+                        resultSet.getInt("stock"),
                         resultSet.getString("description"),
                         resultSet.getString("product_image"),
                         resultSet.getString("thumbnail")
@@ -322,6 +352,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                         resultSet.getString("product_number"),
                         resultSet.getString("product_name"),
                         new BigDecimal(resultSet.getString("unit_cost")),
+                        resultSet.getInt("stock"),
                         resultSet.getString("description"),
                         resultSet.getString("product_image"),
                         resultSet.getString("thumbnail")
@@ -337,7 +368,8 @@ public class ProductRepositoryImpl implements ProductRepository {
             return new Page<>(productList, total);
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }    }
+        }
+    }
 
 
 }

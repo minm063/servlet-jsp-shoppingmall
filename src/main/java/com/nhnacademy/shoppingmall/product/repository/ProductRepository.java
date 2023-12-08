@@ -2,6 +2,7 @@ package com.nhnacademy.shoppingmall.product.repository;
 
 import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.product.domain.Product;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,10 +15,12 @@ public interface ProductRepository {
 
     int updateProduct(Product product);
 
+    int updateProduct(int productId, String productName, BigDecimal unitCost, int stock, String description,
+                      String productImage, String thumbnail);
+
     int deleteProduct(int productId);
 
     int countProductById(int productId);
-
     int totalCount();
 
     int totalCountByCategoryId(int categoryId);
