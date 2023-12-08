@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException(userId);
         }
         int prevPoint = userRepository.findPoint(userId);
-        userRepository.updatePoint(userId, pointChanged+prevPoint);
+        userRepository.updatePoint(userId, prevPoint+pointChanged);
     }
 
     @Override

@@ -20,6 +20,7 @@ CREATE TABLE `product`
     `description`    TEXT          NULL COMMENT '설명',
     `product_image`  VARCHAR(30)  NULL COMMENT '제품 이미지',
     `thumbnail`      VARCHAR(30)  NULL COMMENT '제품 썸네일',
+    `stock`          INT            NOT NULL DEFAULT 0 COMMENT '제품 재고',
 
     CONSTRAINT pk_product PRIMARY KEY (product_id)
 );

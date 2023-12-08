@@ -15,6 +15,10 @@ import com.nhnacademy.shoppingmall.order.service.OrderDetailService;
 import com.nhnacademy.shoppingmall.order.service.OrderService;
 import com.nhnacademy.shoppingmall.order.service.impl.OrderDetailServiceImpl;
 import com.nhnacademy.shoppingmall.order.service.impl.OrderServiceImpl;
+import com.nhnacademy.shoppingmall.point.domain.Point;
+import com.nhnacademy.shoppingmall.point.repository.impl.PointRepositoryImpl;
+import com.nhnacademy.shoppingmall.point.service.PointService;
+import com.nhnacademy.shoppingmall.point.service.impl.PointServiceImpl;
 import com.nhnacademy.shoppingmall.product.domain.Product;
 import com.nhnacademy.shoppingmall.product.repository.impl.ProductRepositoryImpl;
 import com.nhnacademy.shoppingmall.product.service.ProductService;
@@ -45,6 +49,7 @@ public class OrderPostController implements BaseController {
     ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
     UserService userService = new UserServiceImpl(new UserRepositoryImpl());
     OrderDetailService orderDetailService = new OrderDetailServiceImpl(new OrderDetailRepositoryImpl());
+    PointService pointService = new PointServiceImpl(new PointRepositoryImpl());
 
 
     @Override
@@ -70,18 +75,17 @@ public class OrderPostController implements BaseController {
         ServletContext servletContext = req.getServletContext();
         RequestChannel requestChannel = (RequestChannel) servletContext.getAttribute("requestChannel");
         try {
-            requestChannel.addRequest(new PointChannelRequest(userId, LocalDateTime.now(), -1 * totalSum)); // 차감
             requestChannel.addRequest(new PointChannelRequest(userId, LocalDateTime.now(), (int) (totalSum * 0.1)));
-            requestChannel.getRequest().execute();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
+        userService.updatePoint(userId, -1 * totalSum);
+        pointService.save(new Point(-1 * totalSum, LocalDateTime.now(), userId));
         orderService.save(new Order(LocalDateTime.now(), LocalDateTime.now().plusDays(3), userId, addressId));
         Order order = orderService.getOrder();
 
         orderDetailService.saveOrderDetail(productList, order.getOrderId());
-
 
         // productList 주고 service에서 update 돌려야됨
         productService.updateProductStock(productList);

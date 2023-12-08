@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(method = RequestMapping.Method.GET, value = "/mypage/update.do")
 public class UserUpdateController implements BaseController {
 
-    UserService userService = new UserServiceImpl(new UserRepositoryImpl());
+    private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

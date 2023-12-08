@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" session="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 
 <div class="container-fluid">
     <div class="row">
@@ -12,13 +14,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="">
+                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/mypage/ordering.do">
                                 주문 명세 조회
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="#">
-                                포인트 사용 내력
+                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/mypage/point/usage.do">
+                                포인트 사용 내역
                             </a>
                         </li>
                         <li class="nav-item">

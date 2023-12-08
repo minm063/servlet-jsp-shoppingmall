@@ -13,4 +13,6 @@ public interface AddressService {
     List<Address> getAddressList(String userId);
 
     Address getAddress(int addressId);
+
+    List<Address> getAddressList(List<Address> addressIdList);
 }

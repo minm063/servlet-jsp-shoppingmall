@@ -1,8 +1,10 @@
 package com.nhnacademy.shoppingmall.order.service.impl;
 
+import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.order.domain.Order;
 import com.nhnacademy.shoppingmall.order.repository.OrderRepository;
 import com.nhnacademy.shoppingmall.order.service.OrderService;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class OrderServiceImpl implements OrderService {
@@ -31,5 +33,18 @@ public class OrderServiceImpl implements OrderService {
             return orderOptional.get();
         }
         return null;
+    }
+
+    @Override
+    public Page<Order> getOrderOnPageByUserId(String userId, int page, int pageSize) {
+        if (orderRepository.totalCountByUserId(userId) == 0) {
+            return new Page<>(new ArrayList<>(), 0);
+        }
+        return orderRepository.findOrderOnPageByUserId(userId, page, pageSize);
+    }
+
+    @Override
+    public int getTotalCountByUserId(String userId) {
+        return orderRepository.totalCountByUserId(userId);
     }
 }

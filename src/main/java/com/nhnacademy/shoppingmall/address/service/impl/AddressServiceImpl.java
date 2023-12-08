@@ -54,4 +54,15 @@ public class AddressServiceImpl implements AddressService {
         }
         return null;
     }
+
+    @Override
+    public List<Address> getAddressList(List<Address> addressIdList) {
+        List<Address> addressList = new ArrayList<>();
+        for (Address address : addressIdList) {
+            if (addressRepository.findAddressByAddressId(address.getAddressId()).isPresent()) {
+                addressList.add(addressRepository.findAddressByAddressId(address.getAddressId()).get());
+            }
+        }
+        return addressList;
+    }
 }
