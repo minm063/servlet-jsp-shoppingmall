@@ -14,8 +14,9 @@ public interface UserService {
 
     void updateByUser(User user);
 
-    void updatePoint(String userId, int pointChanged);
+    void updatePoint(String userId, int price);
 
+    Boolean checkPoint(int price, String userId);
 
     void deleteUser(String userId);
 

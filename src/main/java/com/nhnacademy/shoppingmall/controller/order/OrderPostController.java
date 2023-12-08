@@ -51,7 +51,6 @@ public class OrderPostController implements BaseController {
     OrderDetailService orderDetailService = new OrderDetailServiceImpl(new OrderDetailRepositoryImpl());
     PointService pointService = new PointServiceImpl(new PointRepositoryImpl());
 
-
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // 포인트 차감, 장바구니에서 지우기, 재고........
@@ -80,15 +79,15 @@ public class OrderPostController implements BaseController {
             throw new RuntimeException(e);
         }
 
-        userService.updatePoint(userId, -1 * totalSum);
+        if (!userService.checkPoint(-1 * totalSum, userId) && !productService.updateProductStock(productList)) {
+            return "redirect:/cart.do";
+        }
+        userService.updatePoint(userId, -1 * totalSum); // 회원의 포인트 < 결제금액이면 주문을 할 수 없습니다.
         pointService.save(new Point(-1 * totalSum, LocalDateTime.now(), userId));
         orderService.save(new Order(LocalDateTime.now(), LocalDateTime.now().plusDays(3), userId, addressId));
         Order order = orderService.getOrder();
 
         orderDetailService.saveOrderDetail(productList, order.getOrderId());
-
-        // productList 주고 service에서 update 돌려야됨
-        productService.updateProductStock(productList);
         cartService.deleteCartByUserId(userId);
 
         return "redirect:/index.do";

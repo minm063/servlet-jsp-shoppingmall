@@ -20,7 +20,7 @@ public interface ProductService {
     void updateProduct(int productId, String productName, BigDecimal unitCost, int stock, String description,
                        String productImage, String thumbnail);
 
-    void updateProductStock(List<Product> productList);
+    Boolean updateProductStock(List<Product> productList);
 
     void deleteProduct(int productId);
 

@@ -57,12 +57,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePoint(String userId, int pointChanged) {
+    public void updatePoint(String userId, int price) {
         if (userRepository.countByUserId(userId) == 0) {
             throw new UserNotFoundException(userId);
         }
         int prevPoint = userRepository.findPoint(userId);
-        userRepository.updatePoint(userId, prevPoint+pointChanged);
+        if (prevPoint + price > 0) {
+            userRepository.updatePoint(userId, prevPoint + price);
+        }
+    }
+
+    @Override
+    public Boolean checkPoint(int price, String userId) {
+        int prevPoint = userRepository.findPoint(userId);
+        if (prevPoint + price > 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override

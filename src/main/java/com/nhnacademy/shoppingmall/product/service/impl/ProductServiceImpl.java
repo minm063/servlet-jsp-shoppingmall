@@ -182,10 +182,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProductStock(List<Product> productList) {
+    public Boolean updateProductStock(List<Product> productList) {
         for (Product product : productList) {
             int prevStock = productRepository.findStock(product.getProductId());
+            if (prevStock - product.getStock() < 0) {
+                return false;
+            }
             productRepository.updateProductStock(product.getProductId(), prevStock - product.getStock());
         }
+        return true;
     }
 }
