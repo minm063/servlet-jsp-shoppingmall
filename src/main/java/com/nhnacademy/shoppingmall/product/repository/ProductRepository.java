@@ -18,9 +18,12 @@ public interface ProductRepository {
     int updateProduct(int productId, String productName, BigDecimal unitCost, int stock, String description,
                       String productImage, String thumbnail);
 
+    int updateProductStock(int productId, int stock);
+
     int deleteProduct(int productId);
 
-    int countProductById(int productId);
+    int countById(int productId);
+
     int totalCount();
 
     int totalCountByCategoryId(int categoryId);
@@ -34,4 +37,10 @@ public interface ProductRepository {
     Page<Product> findProductsOnPage(int page, int pageSize);
 
     Page<Product> findProductsOnPageByCategory(int page, int pageSize, int categoryId);
+
+    int countBySearch(String search);
+
+    Page<Product> findProductBySearch(int page, int pageSize, String search);
+
+    int findStock(int productId);
 }

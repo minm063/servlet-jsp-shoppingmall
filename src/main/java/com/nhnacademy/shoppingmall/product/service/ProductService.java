@@ -20,6 +20,8 @@ public interface ProductService {
     void updateProduct(int productId, String productName, BigDecimal unitCost, int stock, String description,
                        String productImage, String thumbnail);
 
+    void updateProductStock(List<Product> productList);
+
     void deleteProduct(int productId);
 
     List<Product> getProducts();
@@ -27,6 +29,8 @@ public interface ProductService {
     int getIndex();
 
     int getTotalCount();
+
+    int getTotalCountBySearch(String search);
 
     int getTotalCountByCategoryId(int categoryId);
 
@@ -36,6 +40,8 @@ public interface ProductService {
     Page<Product> getProductsOnPageByPath(int page, int pageSize, String path);
 
     Page<Product> getProductsOnPageByCategoryId(int page, int pageSize, String path, int categoryId);
+
+    Page<Product> getProductsOnPageBySearch(int page, int pageSize, String path, String search);
 
     List<Product> getProducts(List<Cart> cartList);
 

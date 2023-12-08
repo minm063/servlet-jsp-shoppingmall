@@ -39,4 +39,13 @@ public class CartServiceImpl implements CartService {
             log.info("update ... ing : {}, {}", cartList.get(i).getRecordId(), quantities.get(i));
         }
     }
+
+    @Override
+    public void deleteCartByUserId(String userId) {
+        if (cartRepository.countByUserId(userId) == 0) {
+            throw new CartNotFoundException(userId);
+        }
+
+        cartRepository.deleteCartByUserId(userId);
+    }
 }

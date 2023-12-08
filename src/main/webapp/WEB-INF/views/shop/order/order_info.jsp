@@ -45,5 +45,5 @@
     <p>${totalSum}원</p>
     <p>잔액</p>
     <p><c:out value="${userPoint-totalSum}" />원</p>
-    <button type="submit" class="btn btn-primary" >${totalSum}원 결제하기</button>
+    <button type="submit" name="totalSum" class="btn btn-primary" value="${totalSum}">${totalSum}원 결제하기</button>
 </form>

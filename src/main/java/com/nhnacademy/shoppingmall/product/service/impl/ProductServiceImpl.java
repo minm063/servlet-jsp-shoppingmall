@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void saveProduct(Product product) {
-        if (productRepository.countProductById(product.getProductId()) != 0) {
+        if (productRepository.countById(product.getProductId()) != 0) {
             throw new ProductAlreadyExistsException(product.getProductName());
         }
         productRepository.saveProduct(product);
@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void updateProduct(Product product) {
-        if (productRepository.countProductById(product.getProductId()) == 0) {
+        if (productRepository.countById(product.getProductId()) == 0) {
             throw new ProductNotFoundException(product.getProductName());
         }
         productRepository.updateProduct(product);
@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     public void updateProduct(int productId, String productName, BigDecimal unitCost, int stock, String description,
                               String productImage, String thumbnail) {
 
-        if (productRepository.countProductById(productId) == 0) {
+        if (productRepository.countById(productId) == 0) {
             throw new ProductNotFoundException(productName);
         }
         productRepository.updateProduct(productId, productName, unitCost, stock, description, productImage, thumbnail);
@@ -60,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(int productId) {
-        if (productRepository.countProductById(productId) == 0) {
+        if (productRepository.countById(productId) == 0) {
             throw new ProductNotFoundException(String.valueOf(productId));
         }
 
@@ -115,6 +115,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public int getTotalCountBySearch(String search) {
+        return productRepository.countBySearch(search);
+    }
+
+    @Override
     public Page<Product> getProductsOnPage(int page, int pageSize) {
         return productRepository.findProductsOnPage(page, pageSize);
     }
@@ -151,6 +156,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<Product> getProductsOnPageBySearch(int page, int pageSize, String path, String search) {
+        if (productRepository.countBySearch(search) == 0) {
+            return new Page<>(new ArrayList<>(), 0);
+        }
+        Page<Product> productPage = productRepository.findProductBySearch(page, pageSize, search);
+        for (Product product : productPage.getContent()) {
+            product.setProductImage(path + product.getProductImage());
+            product.setThumbnail(path + product.getThumbnail());
+        }
+
+        return productPage;
+    }
+
+    @Override
     public List<Product> getProducts(List<Cart> cartList) {
         List<Product> productList = new ArrayList<>();
         for (Cart cart : cartList) {
@@ -160,5 +179,13 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         return productList;
+    }
+
+    @Override
+    public void updateProductStock(List<Product> productList) {
+        for (Product product : productList) {
+            int prevStock = productRepository.findStock(product.getProductId());
+            productRepository.updateProductStock(product.getProductId(), prevStock - product.getStock());
+        }
     }
 }

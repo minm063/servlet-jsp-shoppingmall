@@ -35,7 +35,7 @@
                     <li><a href="/mypage/menu.do" class="nav-link px-2 text-white">마이페이지</a></li>
                 </ul>
 
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" method="post" action="/index/search.do">
                     <input type="search" class="form-control form-control-dark" placeholder="Search..."
                            aria-label="Search" name="search">
                 </form>

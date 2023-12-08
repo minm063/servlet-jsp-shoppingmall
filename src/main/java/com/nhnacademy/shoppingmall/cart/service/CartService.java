@@ -11,4 +11,6 @@ public interface CartService {
     List<Cart> getCartByUserId(String userId);
 
     void updateQuantitiesOnProduct(List<Cart> cartList, List<Integer> quantities);
+
+    void deleteCartByUserId(String userId);
 }

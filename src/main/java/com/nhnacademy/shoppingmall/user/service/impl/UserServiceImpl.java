@@ -57,6 +57,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updatePoint(String userId, int pointChanged) {
+        if (userRepository.countByUserId(userId) == 0) {
+            throw new UserNotFoundException(userId);
+        }
+        int prevPoint = userRepository.findPoint(userId);
+        userRepository.updatePoint(userId, pointChanged+prevPoint);
+    }
+
+    @Override
     public void deleteUser(String userId) {
         //todo#4-4 회원삭제
         if (userRepository.countByUserId(userId) == 0) {

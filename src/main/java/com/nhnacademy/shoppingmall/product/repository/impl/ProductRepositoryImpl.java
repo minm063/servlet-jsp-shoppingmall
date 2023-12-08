@@ -143,6 +143,22 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
+    public int updateProductStock(int productId, int stock) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "update product set stock=? where product_id=?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, stock);
+            preparedStatement.setInt(2, productId);
+
+            int result = preparedStatement.executeUpdate();
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public int deleteProduct(int productId) {
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql = "delete from product where product_id=?";
@@ -198,6 +214,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                 return count;
             }
         } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return 0;
     }
@@ -220,12 +237,13 @@ public class ProductRepositoryImpl implements ProductRepository {
                 return count;
             }
         } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return 0;
     }
 
     @Override
-    public int countProductById(int productId) {
+    public int countById(int productId) {
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql = "select count(*) from product where product_id=?";
 
@@ -238,6 +256,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                 return count;
             }
         } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return 0;
     }
@@ -371,5 +390,81 @@ public class ProductRepositoryImpl implements ProductRepository {
         }
     }
 
+    @Override
+    public int findStock(int productId) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "select stock from product where product_id=?";
 
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, productId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
+    @Override
+    public int countBySearch(String search) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "select count(*) from product where product_name like ? or product_number like ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, "%"+search+"%");
+            preparedStatement.setString(2, "%"+search+"%");
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
+    @Override
+    public Page<Product> findProductBySearch(int page, int pageSize, String search) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql =
+                "select product.* from product where product_name like ? or product_number like ? limit ?,?";
+
+        int offset = (page - 1) * pageSize;
+        int limit = pageSize;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, "%" + search + "%");
+            preparedStatement.setString(2, "%" + search + "%");
+            preparedStatement.setInt(3, offset);
+            preparedStatement.setInt(4, limit);
+
+            List<Product> productList = new ArrayList<>(pageSize);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Product product = new Product(
+                        resultSet.getInt("product_id"),
+                        resultSet.getString("product_number"),
+                        resultSet.getString("product_name"),
+                        resultSet.getBigDecimal("unit_cost"),
+                        resultSet.getInt("stock"),
+                        resultSet.getString("description"),
+                        resultSet.getString("product_image"),
+                        resultSet.getString("thumbnail")
+                );
+                productList.add(product);
+            }
+
+            long total = 0;
+            if (!productList.isEmpty()) {
+                total = this.totalCount();
+            }
+            return new Page<>(productList, total);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

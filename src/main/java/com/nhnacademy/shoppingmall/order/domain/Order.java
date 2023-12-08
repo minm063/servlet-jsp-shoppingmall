@@ -13,6 +13,13 @@ public class Order {
 
     private int addressId;
 
+    public Order(LocalDateTime orderDate, LocalDateTime shipDate, String userId, int addressId) {
+        this.orderDate = orderDate;
+        this.shipDate = shipDate;
+        this.userId = userId;
+        this.addressId = addressId;
+    }
+
     public Order(int orderId, LocalDateTime orderDate, LocalDateTime shipDate, String userId, int addressId) {
         this.orderId = orderId;
         this.orderDate = orderDate;

@@ -14,10 +14,10 @@
                     <p><small class="text-body-secondary">${product.productNumber}</small></p>
                     <h2 class="card-title">${product.productName}</h2>
                     <h3>${product.unitCost}원</h3>
-                    <p class="card-text"><input type="number" name="quantity">개</p>
+                    <p class="card-text"><input type="number" name="quantity" value="0">개</p>
                     <p><small class="text-body-secondary">description</small></p>
                     <p class="card-text">${product.description}</p>
-                    <button type="submit" >장바구니에 넣기</button>
+                    <button type="submit">장바구니에 넣기</button>
                     <button type="button" onclick="location.href='order.do'">바로 구매하기</button>
                 </div>
             </div>

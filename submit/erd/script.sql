@@ -117,6 +117,6 @@ CREATE TABLE `product_category`
     `category_id` INT NOT NULL COMMENT '카테고리 아이디',
 
     CONSTRAINT pk_product_category PRIMARY KEY (product_id, category_id),
-    CONSTRAINT fk_product_category_product FOREIGN KEY (product_id) REFERENCES product (product_id),
-    CONSTRAINT fk_product_category_category FOREIGN KEY (category_id) REFERENCES category (category_id)
+    CONSTRAINT fk_product_category_product FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE  CASCADE ,
+    CONSTRAINT fk_product_category_category FOREIGN KEY (category_id) REFERENCES category (category_id) ON DELETE CASCADE
 );

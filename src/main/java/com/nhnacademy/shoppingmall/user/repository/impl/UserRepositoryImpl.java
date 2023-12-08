@@ -170,6 +170,22 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public int updatePoint(String userId, int pointChanged) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "update users set user_point=? where user_id=?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, pointChanged);
+            preparedStatement.setString(2, userId);
+
+            int result = preparedStatement.executeUpdate();
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public int updateLatestLoginAtByUserId(String userId, LocalDateTime latestLoginAt) {
         //todo#3-6, 마지막 로그인 시간 업데이트, executeUpdate()을 반환합니다.
         Connection connection = DbConnectionThreadLocal.getConnection();
@@ -200,6 +216,25 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public int findPoint(String userId) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "select user_point from users where user_id=?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, userId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int point = resultSet.getInt(1);
+                return point;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
     }
 
     @Override

@@ -91,4 +91,19 @@ public class CartRepositoryImpl implements CartRepository {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public int deleteCartByUserId(String userId) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "delete from cart where user_id=?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, userId);
+
+            int result = preparedStatement.executeUpdate();
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -19,6 +19,10 @@ public interface UserRepository {
 
     int updateByUser(User user);
 
+    int updatePoint(String userId, int pointChanged);
+
+    int findPoint(String userId);
+
     int updateLatestLoginAtByUserId(String userId, LocalDateTime latestLoginAt);
 
     int updatePointByUserId(String userId, int point);

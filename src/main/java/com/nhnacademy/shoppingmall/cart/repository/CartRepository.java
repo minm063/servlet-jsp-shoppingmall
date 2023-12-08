@@ -11,4 +11,8 @@ public interface CartRepository {
     int countByUserId(String userId);
 
     int updateQuantity(int recordId, int quantity);
+
+    int deleteCartByUserId(String userId);
+
+
 }
