@@ -21,6 +21,14 @@ public class Cart {
         this.userId = userId;
     }
 
+    public Cart(int recordId, int quantity, LocalDateTime dateCreated, int productId, String userId) {
+        this.recordId = recordId;
+        this.quantity = quantity;
+        this.dateCreated = dateCreated;
+        this.productId = productId;
+        this.userId = userId;
+    }
+
     public int getRecordId() {
         return recordId;
     }
@@ -39,5 +47,9 @@ public class Cart {
 
     public String getUserId() {
         return userId;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

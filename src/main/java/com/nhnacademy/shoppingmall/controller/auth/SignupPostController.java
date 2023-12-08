@@ -2,6 +2,10 @@ package com.nhnacademy.shoppingmall.controller.auth;
 
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
+import com.nhnacademy.shoppingmall.point.domain.Point;
+import com.nhnacademy.shoppingmall.point.repository.impl.PointRepositoryImpl;
+import com.nhnacademy.shoppingmall.point.service.PointService;
+import com.nhnacademy.shoppingmall.point.service.impl.PointServiceImpl;
 import com.nhnacademy.shoppingmall.user.domain.User;
 import com.nhnacademy.shoppingmall.user.repository.impl.UserRepositoryImpl;
 import com.nhnacademy.shoppingmall.user.service.UserService;
@@ -14,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SignupPostController implements BaseController {
 
     private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
+    private final PointService pointService = new PointServiceImpl(new PointRepositoryImpl());
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -27,9 +32,11 @@ public class SignupPostController implements BaseController {
         LocalDateTime createdAt = LocalDateTime.now();
         LocalDateTime latestLoginAt = null;
 
-
         User user = new User(userId, userName, userPw, userBirth, auth, userPoint, createdAt, latestLoginAt);
+        Point point = new Point(userPoint, LocalDateTime.now(), userId);
+
         userService.saveUser(user);
+        pointService.save(point);
 
         return "shop/login/login_form";
     }

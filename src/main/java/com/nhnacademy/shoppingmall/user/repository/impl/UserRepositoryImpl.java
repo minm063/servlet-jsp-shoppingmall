@@ -187,6 +187,22 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public int updatePointByUserId(String userId, int point) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "update users set user_point=? where user_id=?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, point);
+            preparedStatement.setString(2, userId);
+
+            int result = preparedStatement.executeUpdate();
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public int countByUserId(String userId) {
         //todo#3-7 userId와 일치하는 회원의 count를 반환합니다.
         Connection connection = DbConnectionThreadLocal.getConnection();

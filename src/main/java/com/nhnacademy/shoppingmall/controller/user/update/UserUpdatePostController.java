@@ -32,6 +32,6 @@ public class UserUpdatePostController implements BaseController {
         log.info("user: {}", user);
         userService.updateByUser(user);
 
-        return "redirect:/mypage.do";
+        return "redirect:/mypage/menu.do";
     }
 }

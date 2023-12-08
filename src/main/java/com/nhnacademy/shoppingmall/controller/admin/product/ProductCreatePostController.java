@@ -99,7 +99,7 @@ public class ProductCreatePostController implements BaseController {
                 }
             }
 
-            return "redirect:/admin.do";
+            return "redirect:/admin/menu.do";
         }
         return "redirect:/admin/product/detail.do";
     }

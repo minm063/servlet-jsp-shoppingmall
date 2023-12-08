@@ -2,11 +2,18 @@ package com.nhnacademy.shoppingmall.controller.auth;
 
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
+import com.nhnacademy.shoppingmall.point.domain.Point;
+import com.nhnacademy.shoppingmall.point.repository.impl.PointRepositoryImpl;
+import com.nhnacademy.shoppingmall.point.service.PointService;
+import com.nhnacademy.shoppingmall.point.service.impl.PointServiceImpl;
 import com.nhnacademy.shoppingmall.user.domain.User;
-import com.nhnacademy.shoppingmall.user.exception.UserNotFoundException;
 import com.nhnacademy.shoppingmall.user.repository.impl.UserRepositoryImpl;
 import com.nhnacademy.shoppingmall.user.service.UserService;
 import com.nhnacademy.shoppingmall.user.service.impl.UserServiceImpl;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,39 +24,35 @@ import lombok.extern.slf4j.Slf4j;
 public class LoginPostController implements BaseController {
 
     private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
+    private final PointService pointService = new PointServiceImpl(new PointRepositoryImpl());
     private static final int INACTIVE_INTERVAL_TIME = 3600;
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         //todo#13-2 로그인 구현, session은 60분동안 유지됩니다.
-        String id = req.getParameter("user_id");
-        String pw = req.getParameter("user_password");
-        User user = userService.getUser(id);
-        try {
-            userService.doLogin(id, pw);
+        String userId = req.getParameter("user_id");
+        String userPassword = req.getParameter("user_password");
 
-            HttpSession session = req.getSession(true);
-            session.setMaxInactiveInterval(INACTIVE_INTERVAL_TIME);
-            session.setAttribute("userId", id);
-            session.setAttribute("userName", user.getUserName());
-
-            User.Auth role = user.getUserAuth();
-            String compactRole;
-            if (role.equals(User.Auth.ROLE_USER)) {
-                compactRole = "user";
-            } else {
-                compactRole = "admin";
-            }
-
-            session.setAttribute("role", role);
-            session.setAttribute("compactRole", compactRole);
-
-
-//            return "shop/main/index";
-            return "redirect:/index.do";
-        } catch (UserNotFoundException e) {
+        if (Objects.isNull(userService.getUser(userId))) {
             return "redirect:/login.do";
         }
+        User user = userService.getUser(userId);
+        LocalDateTime previous = user.getLatestLoginAt();
+        User.Auth role = user.getUserAuth();
+
+        if (LocalDateTime.now().isAfter(previous.withHour(0).withMinute(0).withSecond(0).withNano(0))) {
+            pointService.save(new Point(100_000, LocalDateTime.now(), userId));
+            // update point by userId
+        }
+
+        userService.doLogin(userId, userPassword);
+        HttpSession session = req.getSession(true);
+
+        session.setMaxInactiveInterval(INACTIVE_INTERVAL_TIME);
+        session.setAttribute("userId", userId);
+        session.setAttribute("role", role);
+//            return "shop/main/index";
+        return "redirect:/index.do";
 
     }
 }

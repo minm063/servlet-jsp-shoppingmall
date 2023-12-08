@@ -22,7 +22,7 @@ public class CategoryCreateController implements BaseController {
 
         if (Objects.nonNull(categoryName)) {
             service.saveCategory(new Category(categoryName));
-            return "redirect:/mypage/admin.do";
+            return "redirect:/admin/menu.do";
         }
 
         return "redirect:/admin/category/detail.do";

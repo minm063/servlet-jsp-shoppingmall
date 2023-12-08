@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.product.service.impl;
 
+import com.nhnacademy.shoppingmall.cart.domain.Cart;
 import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.product.domain.Category;
 import com.nhnacademy.shoppingmall.product.domain.Product;
@@ -138,6 +139,17 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return productsOnPage;
+    }
 
+    @Override
+    public List<Product> getProducts(List<Cart> cartList) {
+        List<Product> productList = new ArrayList<>();
+        for (Cart cart : cartList) {
+            Optional<Product> product = productRepository.findByProductId(cart.getProductId());
+            if (product.isPresent()) {
+                productList.add(product.get());
+            }
+        }
+        return productList;
     }
 }

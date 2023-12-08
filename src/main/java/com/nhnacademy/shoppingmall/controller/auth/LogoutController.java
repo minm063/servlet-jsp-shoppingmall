@@ -16,6 +16,7 @@ public class LogoutController implements BaseController {
         HttpSession session = req.getSession(false);
 
         session.invalidate();
-        return "shop/main/index";
+//        return "shop/main/index";
+        return "redirect:/index.do";
     }
 }

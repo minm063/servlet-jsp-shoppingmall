@@ -21,6 +21,8 @@ public interface UserRepository {
 
     int updateLatestLoginAtByUserId(String userId, LocalDateTime latestLoginAt);
 
+    int updatePointByUserId(String userId, int point);
+
     int countByUserId(String userId);
 
     List<User> findUsers(User.Auth auth);

@@ -55,6 +55,8 @@
         </div>
     </section>
 </div>
+<h6>전체 상품</h6>
+<hr />
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
     <c:forEach var="product" items="${requestScope.products.getContent()}" varStatus="status1">
         <div class="col">

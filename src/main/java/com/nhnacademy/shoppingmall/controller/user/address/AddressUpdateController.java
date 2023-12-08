@@ -27,7 +27,7 @@ public class AddressUpdateController implements BaseController {
 
         if (Objects.isNull(addressService.getAddress(addressId))) {
             log.info("null");
-            return "redirect:/mypage.do";
+            return "redirect:/mypage/menu.do";
         }
 
         req.setAttribute("address", addressService.getAddress(addressId));

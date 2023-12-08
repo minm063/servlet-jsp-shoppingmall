@@ -35,7 +35,7 @@ public class RequestChannel {
         }
 
         //todo#14-6 queue에 요청을 추가하고 대기하고 있는 스레드를 깨웁니다
-        notifyAll();
+        notify();
     }
 
 }

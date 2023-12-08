@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.product.service;
 
+import com.nhnacademy.shoppingmall.cart.domain.Cart;
 import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.product.domain.Product;
 import java.util.List;
@@ -31,5 +32,7 @@ public interface ProductService {
     Page<Product> getProductsOnPageByPath(int page, int pageSize, String path);
 
     Page<Product> getProductsOnPageByCategoryId(int page, int pageSize, String path, int categoryId);
+
+    List<Product> getProducts(List<Cart> cartList);
 
 }

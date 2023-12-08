@@ -26,7 +26,7 @@
             </tbody>
         </table>
     </div>
-    <button class="btn btn-primary" type="button" onclick="location.href='/admin.do'">취소</button>
+    <button class="btn btn-primary" type="button" onclick="location.href='/mypage/menu.do'">취소</button>
     <button class="btn btn-primary" type="submit">수정하기</button>
 
 </form>
