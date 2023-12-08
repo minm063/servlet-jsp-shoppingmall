@@ -6,7 +6,9 @@ import com.nhnacademy.shoppingmall.order.repository.OrderRepository;
 import com.nhnacademy.shoppingmall.order.service.OrderService;
 import java.util.ArrayList;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
@@ -38,8 +40,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<Order> getOrderOnPageByUserId(String userId, int page, int pageSize) {
         if (orderRepository.totalCountByUserId(userId) == 0) {
+            log.info("설마??");
             return new Page<>(new ArrayList<>(), 0);
         }
+        log.info("아니면??");
         return orderRepository.findOrderOnPageByUserId(userId, page, pageSize);
     }
 

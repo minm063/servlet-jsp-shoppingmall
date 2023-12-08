@@ -11,7 +11,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
@@ -114,6 +117,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         String sql = "select count(*) from `order` where user_id=?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            log.info("userId: {}", userId);
             preparedStatement.setString(1, userId);
 
             ResultSet resultSet = preparedStatement.executeQuery();

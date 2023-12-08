@@ -29,7 +29,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequestMapping(method = RequestMapping.Method.GET, value = "/mypage/ordering.do")
 public class OrderingController implements BaseController {
 
@@ -45,15 +47,30 @@ public class OrderingController implements BaseController {
         HttpSession httpSession = req.getSession(false);
 
         if (Objects.isNull(httpSession.getAttribute("userId"))) {
+            log.info("user id is null @@@");
             return "redirect:/index.do";
         }
 
-        String userId = String.valueOf(req.getAttribute("userId"));
+        String userId = String.valueOf(httpSession.getAttribute("userId"));
         int page = (Objects.isNull(req.getParameter("page")) ? 1 : Integer.parseInt(req.getParameter("page")));
 
         Page<Order> orderPage = orderService.getOrderOnPageByUserId(userId, page, PAGE_SIZE);
+        for (Order order : orderPage.getContent()) {
+            log.info("order: {}", order.getOrderId());
+        }
         List<Address> addressList = addressService.getAddressList(orderPage.getContent());
+        for (Address address : addressList) {
+            log.info("address: {}", address.getAddressId());
+        }
+
         List<List<OrderDetail>> orderDetailList = orderDetailService.getOrderDetailByOrderId(orderPage.getContent());
+        for (List<OrderDetail> orderDetailList1 : orderDetailList) {
+            for (OrderDetail orderDetail : orderDetailList1) {
+                log.info("order: {}", orderDetail.getOrderId());
+            }
+            log.info("<hr /> order");
+        }
+
         List<List<Product>> productList = productService.getProductsByProductId(orderDetailList);
 
 
