@@ -11,7 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequestMapping(method = RequestMapping.Method.POST, value = "/mypage/deleteAction.do")
 public class UserDeletePostController implements BaseController {
 
@@ -23,8 +25,12 @@ public class UserDeletePostController implements BaseController {
         String deleteText = req.getParameter("deleteText");
         String userId = String.valueOf(session.getAttribute("userId"));
 
-        if (Objects.nonNull(userId) && "탈퇴".equals(deleteText)) {
+        log.info(userId);
+
+        if (Objects.nonNull(userId) && "breakaway".equals(deleteText)) {
+            log.info("탈퇴합니다");
             userService.deleteUser(userId);
+            session.invalidate();
             return "redirect:/index.do";
         }
         req.setAttribute("text", "다시 입력해주세요.");

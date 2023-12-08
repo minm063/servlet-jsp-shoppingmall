@@ -32,6 +32,7 @@ public class SignupPostController implements BaseController {
         LocalDateTime createdAt = LocalDateTime.now();
         LocalDateTime latestLoginAt = null;
 
+
         User user = new User(userId, userName, userPw, userBirth, auth, userPoint, createdAt, latestLoginAt);
         Point point = new Point(userPoint, LocalDateTime.now(), userId);
 

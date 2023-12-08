@@ -43,11 +43,11 @@
             </tr>
             <tr>
                 <th scope="row">cost</th>
-                <td><input type="text" value="${product.unitCost}" name="unitCost" required></td>
+                <td><input type="number" value="${product.unitCost}" name="unitCost" required></td>
             </tr>
             <tr>
                 <th scope="row">재고</th>
-                <td><input type="text" value="${product.stock}" name="stock"></td>
+                <td><input type="number" value="${product.stock}" name="stock"></td>
             </tr>
             <tr>
                 <th scope="row">description</th>

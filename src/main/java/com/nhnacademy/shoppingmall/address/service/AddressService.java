@@ -1,6 +1,7 @@
 package com.nhnacademy.shoppingmall.address.service;
 
 import com.nhnacademy.shoppingmall.address.domain.Address;
+import com.nhnacademy.shoppingmall.order.domain.Order;
 import java.util.List;
 
 public interface AddressService {
@@ -14,5 +15,5 @@ public interface AddressService {
 
     Address getAddress(int addressId);
 
-    List<Address> getAddressList(List<Address> addressIdList);
+    List<Address> getAddressList(List<Order> orderList);
 }

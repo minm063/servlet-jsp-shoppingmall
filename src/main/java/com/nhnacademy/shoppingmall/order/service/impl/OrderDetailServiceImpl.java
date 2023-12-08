@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.order.service.impl;
 
+import com.nhnacademy.shoppingmall.order.domain.Order;
 import com.nhnacademy.shoppingmall.order.domain.OrderDetail;
 import com.nhnacademy.shoppingmall.order.repository.OrderDetailRepository;
 import com.nhnacademy.shoppingmall.order.service.OrderDetailService;
@@ -31,5 +32,14 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                 orderDetailRepository.save(orderDetailOptional.get());
             }
         }
+    }
+
+    @Override
+    public List<List<OrderDetail>> getOrderDetailByOrderId(List<Order> orderList) {
+        List<List<OrderDetail>> orderDetailList = new ArrayList<>();
+        for (Order order : orderList) {
+            orderDetailList.add(orderDetailRepository.findOrderDetailByOrderId(order.getOrderId()));
+        }
+        return orderDetailList;
     }
 }

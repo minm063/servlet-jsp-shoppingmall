@@ -2,6 +2,7 @@ package com.nhnacademy.shoppingmall.product.service;
 
 import com.nhnacademy.shoppingmall.cart.domain.Cart;
 import com.nhnacademy.shoppingmall.common.page.Page;
+import com.nhnacademy.shoppingmall.order.domain.OrderDetail;
 import com.nhnacademy.shoppingmall.product.domain.Product;
 import java.math.BigDecimal;
 import java.util.List;
@@ -45,4 +46,5 @@ public interface ProductService {
 
     List<Product> getProducts(List<Cart> cartList);
 
+    List<List<Product>> getProductsByProductId(List<List<OrderDetail>> orderDetailList);
 }

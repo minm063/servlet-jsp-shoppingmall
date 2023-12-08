@@ -18,16 +18,9 @@
                     <p><small class="text-body-secondary">description</small></p>
                     <p class="card-text">${product.description}</p>
                     <button type="submit">장바구니에 넣기</button>
-                    <button type="button" onclick="location.href='order.do'">바로 구매하기</button>
                 </div>
             </div>
         </div>
     </div>
 </form>
 <button class="btn btn-primary" onclick="location.href='/index.do'">뒤로 가기</button>
-<script>
-    function submitForm(action) {
-        document.getElementById('myForm').action = action;
-        document.getElementById('myForm').submit();
-    }
-</script>

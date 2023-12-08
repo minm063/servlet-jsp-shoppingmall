@@ -9,11 +9,18 @@ import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.order.domain.Order;
+import com.nhnacademy.shoppingmall.order.domain.OrderDetail;
+import com.nhnacademy.shoppingmall.order.repository.impl.OrderDetailRepositoryImpl;
 import com.nhnacademy.shoppingmall.order.repository.impl.OrderRepositoryImpl;
+import com.nhnacademy.shoppingmall.order.service.OrderDetailService;
 import com.nhnacademy.shoppingmall.order.service.OrderService;
+import com.nhnacademy.shoppingmall.order.service.impl.OrderDetailServiceImpl;
 import com.nhnacademy.shoppingmall.order.service.impl.OrderServiceImpl;
 import com.nhnacademy.shoppingmall.product.domain.Category;
 import com.nhnacademy.shoppingmall.product.domain.Product;
+import com.nhnacademy.shoppingmall.product.repository.impl.ProductRepositoryImpl;
+import com.nhnacademy.shoppingmall.product.service.ProductService;
+import com.nhnacademy.shoppingmall.product.service.impl.ProductServiceImpl;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -28,6 +35,8 @@ public class OrderingController implements BaseController {
 
     private final OrderService orderService = new OrderServiceImpl(new OrderRepositoryImpl());
     private final AddressService addressService = new AddressServiceImpl(new AddressRepositoryImpl());
+    private final OrderDetailService orderDetailService = new OrderDetailServiceImpl(new OrderDetailRepositoryImpl());
+    private final ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
     private final int PAGE_SIZE = 3;
 
     @Override
@@ -43,7 +52,9 @@ public class OrderingController implements BaseController {
         int page = (Objects.isNull(req.getParameter("page")) ? 1 : Integer.parseInt(req.getParameter("page")));
 
         Page<Order> orderPage = orderService.getOrderOnPageByUserId(userId, page, PAGE_SIZE);
-//        List<Address> addressList = addressService.getAddressList(orderPage.getContent().)
+        List<Address> addressList = addressService.getAddressList(orderPage.getContent());
+        List<List<OrderDetail>> orderDetailList = orderDetailService.getOrderDetailByOrderId(orderPage.getContent());
+        List<List<Product>> productList = productService.getProductsByProductId(orderDetailList);
 
 
         int total = orderService.getTotalCountByUserId(userId);
@@ -55,6 +66,9 @@ public class OrderingController implements BaseController {
         int endPage = total < PAGE_SIZE ? total : startPage + PAGE_SIZE - 1;
 
         req.setAttribute("orderList", orderPage);
+        req.setAttribute("addressList", addressList);
+        req.setAttribute("orderDetailList", orderDetailList);
+        req.setAttribute("productList", productList);
         req.setAttribute("startPage", startPage);
         req.setAttribute("endPage", endPage);
         req.setAttribute("page", page);

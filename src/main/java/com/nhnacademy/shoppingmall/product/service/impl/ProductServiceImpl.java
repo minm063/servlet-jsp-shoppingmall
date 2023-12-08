@@ -2,6 +2,7 @@ package com.nhnacademy.shoppingmall.product.service.impl;
 
 import com.nhnacademy.shoppingmall.cart.domain.Cart;
 import com.nhnacademy.shoppingmall.common.page.Page;
+import com.nhnacademy.shoppingmall.order.domain.OrderDetail;
 import com.nhnacademy.shoppingmall.product.domain.Product;
 import com.nhnacademy.shoppingmall.product.exception.ProductAlreadyExistsException;
 import com.nhnacademy.shoppingmall.product.exception.ProductNotFoundException;
@@ -191,5 +192,21 @@ public class ProductServiceImpl implements ProductService {
             productRepository.updateProductStock(product.getProductId(), prevStock - product.getStock());
         }
         return true;
+    }
+
+    @Override
+    public List<List<Product>> getProductsByProductId(List<List<OrderDetail>> orderDetailList) {
+        List<List<Product>> list = new ArrayList<>();
+        for (List<OrderDetail> orderDetailList1 : orderDetailList) {
+            List<Product> productList = new ArrayList<>();
+            for (OrderDetail orderDetail : orderDetailList1) {
+                Optional<Product> product = productRepository.findByProductId(orderDetail.getProductId());
+                if (product.isPresent()) {
+                    productList.add(product.get());
+                }
+            }
+            list.add(productList);
+        }
+        return list;
     }
 }

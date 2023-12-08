@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeSet;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -59,7 +60,7 @@ public class ProductCreatePostController implements BaseController {
                             fileName = "no-image.png";
                         }
                         if (!item.getName().isEmpty() && item.getName() != null) {
-                            fileName = new File(LocalDateTime.now() + "_" + item.getName()).getName();
+                            fileName = new File(UUID.randomUUID() + "_" + item.getName()).getName();
                             log.info(DEFAULT_PATH + fileName);
                             if (!new File(DEFAULT_PATH + fileName).exists()) {
                                 item.write(new File(DEFAULT_PATH + fileName));

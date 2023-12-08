@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeSet;
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -54,10 +55,8 @@ public class ProductUpdatePostController implements BaseController {
                             fileName = "no-image.png";
                         }
                         if (!item.getName().isEmpty() && item.getName() != null) {
-                            String name = item.getName();
-
                             fileName = new File(
-                                    LocalDateTime.now() + "_" + item.getName().replace("/resources/", "")).getName();
+                                    UUID.randomUUID() + "_" + item.getName().replace("/resources/", "")).getName();
                             if (!new File(DEFAULT_PATH + fileName).exists()) {
                                 item.write(new File(DEFAULT_PATH + fileName));
                             }

@@ -4,6 +4,7 @@ import com.nhnacademy.shoppingmall.address.domain.Address;
 import com.nhnacademy.shoppingmall.address.exception.AddressNotFoundException;
 import com.nhnacademy.shoppingmall.address.repository.AddressRepository;
 import com.nhnacademy.shoppingmall.address.service.AddressService;
+import com.nhnacademy.shoppingmall.order.domain.Order;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -56,11 +57,11 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public List<Address> getAddressList(List<Address> addressIdList) {
+    public List<Address> getAddressList(List<Order> orderList) {
         List<Address> addressList = new ArrayList<>();
-        for (Address address : addressIdList) {
-            if (addressRepository.findAddressByAddressId(address.getAddressId()).isPresent()) {
-                addressList.add(addressRepository.findAddressByAddressId(address.getAddressId()).get());
+        for (Order order : orderList) {
+            if (addressRepository.findAddressByAddressId(order.getAddressId()).isPresent()) {
+                addressList.add(addressRepository.findAddressByAddressId(order.getAddressId()).get());
             }
         }
         return addressList;
